@@ -971,8 +971,8 @@ class Str
      */
     public function flushCache(): void
     {
-        $this->snakeCache = [];
-        $this->camelCache = [];
+        $this->snakeCache  = [];
+        $this->camelCache  = [];
         $this->studlyCache = [];
     }
 }
