@@ -16,7 +16,7 @@
   "minimum-stability": "dev",
   "require": {
     "php": "^8.2",
-    "voku/portable-ascii": "dev-master"
+    "voku/portable-ascii": "^2.0"
   },
   "require-dev": {
       "phpstan/phpstan": "@stable"
