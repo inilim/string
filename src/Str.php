@@ -355,7 +355,7 @@ class Str
     /**
      * Return the length of the given string.
      */
-    public function length(string $value, string|null $encoding = null): int
+    public function length(string $value, string|null $encoding = 'UTF-8'): int
     {
         return \mb_strlen($value, $encoding);
     }
@@ -517,7 +517,7 @@ class Str
     /**
      * Find the multi-byte safe position of the first occurrence of a given substring in a string.
      */
-    public function position(string $haystack, string $needle, int $offset = 0, string|null $encoding = null): int|false
+    public function position(string $haystack, string $needle, int $offset = 0, string|null $encoding = 'UTF-8'): int|false
     {
         return \mb_strpos($haystack, $needle, $offset, $encoding);
     }
