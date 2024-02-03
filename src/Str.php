@@ -50,7 +50,7 @@ class Str
     {
         if ($search === '') return $subject;
 
-        $position = \strrpos($subject, (string) $search);
+        $position = \strrpos($subject, $search);
 
         if ($position === false) return $subject;
 
@@ -62,7 +62,7 @@ class Str
      */
     public function ascii(string $value, string $language = 'en'): string
     {
-        return ASCII::to_ascii((string) $value, $language);
+        return ASCII::to_ascii($value, $language);
     }
 
     /**
@@ -80,7 +80,7 @@ class Str
     {
         if ($search === '') return $subject;
 
-        $result = \strstr($subject, (string) $search, true);
+        $result = \strstr($subject, $search, true);
 
         return $result === false ? $subject : $result;
     }
@@ -133,9 +133,8 @@ class Str
 
     /**
      * Get the character at the specified index.
-     * @return string|false
      */
-    public function charAt(string $subject, int $index)
+    public function charAt(string $subject, int $index): string|false
     {
         $length = \mb_strlen($subject);
 
@@ -274,13 +273,10 @@ class Str
 
     /**
      * Determine if a given string is 7 bit ASCII.
-     *
-     * @param  string  $value
-     * @return bool
      */
-    public function isAscii($value)
+    public function isAscii(string $value): bool
     {
-        return ASCII::is_ascii((string) $value);
+        return ASCII::is_ascii($value);
     }
 
     /**
@@ -441,8 +437,6 @@ class Str
      */
     public function isMatch(string|iterable $pattern, string $value): bool
     {
-        $value = (string) $value;
-
         if (!\is_iterable($pattern)) $pattern = [$pattern];
 
         foreach ($pattern as $pattern) {
@@ -521,48 +515,15 @@ class Str
     }
 
     /**
-     * Get the plural form of an English word.
-     */
-    public function plural(string $value, int|array|\Countable $count = 2): string
-    {
-        return Pluralizer::plural($value, $count);
-    }
-
-    /**
-     * Pluralize the last word of an English, studly caps case string.
-     *
-     * @param  string  $value
-     * @param  int|array|\Countable  $count
-     * @return string
-     */
-    public function pluralStudly($value, $count = 2)
-    {
-        $parts = \preg_split('/(.)(?=[A-Z])/u', $value, -1, PREG_SPLIT_DELIM_CAPTURE);
-
-        $lastWord = \array_pop($parts);
-
-        return \implode('', $parts) . self::plural($lastWord, $count);
-    }
-
-    /**
      * Find the multi-byte safe position of the first occurrence of a given substring in a string.
-     *
-     * @param  string  $haystack
-     * @param  string  $needle
-     * @param  int  $offset
-     * @param  string|null  $encoding
-     * @return int|false
      */
-    public function position($haystack, $needle, $offset = 0, $encoding = null)
+    public function position(string $haystack, string $needle, int $offset = 0, string|null $encoding = null): int|false
     {
-        return \mb_strpos($haystack, (string) $needle, $offset, $encoding);
+        return \mb_strpos($haystack, $needle, $offset, $encoding);
     }
 
     /**
      * Generate a more truly "random" alpha-numeric string.
-     *
-     * @param  int  $length
-     * @return string
      */
     public function random(int $length = 16): string
     {
@@ -642,11 +603,7 @@ class Str
      */
     public function replaceFirst(string $search, string $replace, string $subject): string
     {
-        $search = (string) $search;
-
-        if ($search === '') {
-            return $subject;
-        }
+        if ($search === '') return $subject;
 
         $position = \strpos($subject, $search);
 
@@ -662,11 +619,7 @@ class Str
      */
     public function replaceStart(string $search, string $replace, string $subject): string
     {
-        $search = (string) $search;
-
-        if ($search === '') {
-            return $subject;
-        }
+        if ($search === '') return $subject;
 
         if ($this->startsWith($subject, $search)) {
             return $this->replaceFirst($search, $replace, $subject);
@@ -680,8 +633,6 @@ class Str
      */
     public function replaceLast(string $search, string $replace, string $subject): string
     {
-        $search = (string) $search;
-
         if ($search === '') return $subject;
 
         $position = \strrpos($subject, $search);
@@ -698,8 +649,6 @@ class Str
      */
     public function replaceEnd(string $search, string $replace, string $subject): string
     {
-        $search = (string) $search;
-
         if ($search === '') return $subject;
 
         if ($this->endsWith($subject, $search)) {
@@ -732,12 +681,8 @@ class Str
 
     /**
      * Begin a string with a single instance of a given value.
-     *
-     * @param  string  $value
-     * @param  string  $prefix
-     * @return string
      */
-    public function start($value, $prefix)
+    public function start(string $value, string $prefix): string
     {
         $quoted = \preg_quote($prefix, '/');
 
@@ -746,54 +691,56 @@ class Str
 
     /**
      * Convert the given string to upper-case.
-     *
-     * @param  string  $value
-     * @return string
      */
-    public function upper($value)
+    public function upper(string $value): string
     {
-        return mb_strtoupper($value, 'UTF-8');
+        return \mb_strtoupper($value, 'UTF-8');
     }
 
     /**
      * Convert the given string to proper case.
-     *
-     * @param  string  $value
-     * @return string
      */
-    public function title($value)
+    public function title(string $value): string
     {
-        return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+        return \mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
     }
 
     /**
      * Convert the given string to proper case for each word.
-     *
-     * @param  string  $value
-     * @return string
      */
-    public function headline($value)
+    public function headline(string $value): string
     {
-        $parts = explode(' ', $value);
+        $parts = \explode(' ', $value);
 
-        $parts = count($parts) > 1
-            ? array_map([$this->class, 'title'], $parts)
-            : array_map([$this->class, 'title'], $this->ucsplit(implode('_', $parts)));
+        $parts = \count($parts) > 1
+            ? \array_map([$this::class, 'title'], $parts)
+            : \array_map([$this::class, 'title'], $this->ucsplit(\implode('_', $parts)));
 
-        $collapsed = $this->replace(['-', '_', ' '], '_', implode('_', $parts));
+        $collapsed = $this->replace(['-', '_', ' '], '_', \implode('_', $parts));
 
-        return implode(' ', array_filter(explode('_', $collapsed)));
+        return \implode(' ', \array_filter(\explode('_', $collapsed)));
+    }
+
+    /**
+     * Replace the given value in the given string.
+     * @param  string|string[]  $search
+     * @param  string|string[]  $replace
+     * @param  string|string[]  $subject
+     * @return string|string[]
+     */
+    public static function replace(string|array $search, string|array $replace, string|array $subject, bool $caseSensitive = true): string|array
+    {
+        return $caseSensitive
+            ? \str_replace($search, $replace, $subject)
+            : \str_ireplace($search, $replace, $subject);
     }
 
     /**
      * Convert the given string to APA-style title case.
      *
      * See: https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case
-     *
-     * @param  string  $value
-     * @return string
      */
-    public function apa($value)
+    public function apa(string $value): string
     {
         $minorWords = [
             'and', 'as', 'but', 'for', 'if', 'nor', 'or', 'so', 'yet', 'a', 'an',
@@ -802,35 +749,35 @@ class Str
 
         $endPunctuation = ['.', '!', '?', ':', '—', ','];
 
-        $words = preg_split('/\s+/', $value, -1, PREG_SPLIT_NO_EMPTY);
+        $words = \preg_split('/\s+/', $value, -1, PREG_SPLIT_NO_EMPTY);
 
-        $words[0] = ucfirst(mb_strtolower($words[0]));
+        $words[0] = \ucfirst(\mb_strtolower($words[0]));
 
-        for ($i = 0; $i < count($words); $i++) {
-            $lowercaseWord = mb_strtolower($words[$i]);
+        for ($i = 0; $i < \count($words); $i++) {
+            $lowercaseWord = \mb_strtolower($words[$i]);
 
-            if (str_contains($lowercaseWord, '-')) {
-                $hyphenatedWords = explode('-', $lowercaseWord);
+            if (\str_contains($lowercaseWord, '-')) {
+                $hyphenatedWords = \explode('-', $lowercaseWord);
 
-                $hyphenatedWords = array_map(function ($part) use ($minorWords) {
-                    return (in_array($part, $minorWords) && mb_strlen($part) <= 3) ? $part : ucfirst($part);
+                $hyphenatedWords = \array_map(function ($part) use ($minorWords) {
+                    return (\in_array($part, $minorWords) && \mb_strlen($part) <= 3) ? $part : ucfirst($part);
                 }, $hyphenatedWords);
 
-                $words[$i] = implode('-', $hyphenatedWords);
+                $words[$i] = \implode('-', $hyphenatedWords);
             } else {
                 if (
-                    in_array($lowercaseWord, $minorWords) &&
-                    mb_strlen($lowercaseWord) <= 3 &&
-                    !($i === 0 || in_array(mb_substr($words[$i - 1], -1), $endPunctuation))
+                    \in_array($lowercaseWord, $minorWords) &&
+                    \mb_strlen($lowercaseWord) <= 3 &&
+                    !($i === 0 || \in_array(\mb_substr($words[$i - 1], -1), $endPunctuation))
                 ) {
                     $words[$i] = $lowercaseWord;
                 } else {
-                    $words[$i] = ucfirst($lowercaseWord);
+                    $words[$i] = \ucfirst($lowercaseWord);
                 }
             }
         }
 
-        return implode(' ', $words);
+        return \implode(' ', $words);
     }
 
     /**
