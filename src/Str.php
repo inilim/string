@@ -12,28 +12,28 @@ class Str
      *
      * @var array
      */
-    protected $snakeCache = [];
+    protected $snake_cache = [];
 
     /**
      * The cache of camel-cased words.
      *
      * @var array
      */
-    protected $camelCache = [];
+    protected $camel_cache = [];
 
     /**
      * The cache of studly-cased words.
      *
      * @var array
      */
-    protected $studlyCache = [];
+    protected $studly_cache = [];
 
     /**
      * The callback that should be used to generate random strings.
      *
      * @var callable|null
      */
-    protected static $randomStringFactory;
+    protected $random_string_factory;
 
     /**
      * Return the remainder of a string after the first occurrence of a given value.
@@ -124,11 +124,11 @@ class Str
      */
     public function camel(string $value): string
     {
-        if (isset($this->camelCache[$value])) {
-            return $this->camelCache[$value];
+        if (isset($this->camel_cache[$value])) {
+            return $this->camel_cache[$value];
         }
 
-        return $this->camelCache[$value] = \lcfirst($this->studly($value));
+        return $this->camel_cache[$value] = \lcfirst($this->studly($value));
     }
 
     /**
@@ -149,14 +149,14 @@ class Str
      * Determine if a given string contains a given substring.
      * @param  string|iterable<string>  $needles
      */
-    public function contains(string $haystack, string|iterable $needles, bool $ignoreCase = false): bool
+    public function contains(string $haystack, string|iterable $needles, bool $ignore_case = false): bool
     {
-        if ($ignoreCase) $haystack = \mb_strtolower($haystack);
+        if ($ignore_case) $haystack = \mb_strtolower($haystack);
 
         if (!\is_iterable($needles)) $needles = (array) $needles;
 
         foreach ($needles as $needle) {
-            if ($ignoreCase) $needle = \mb_strtolower($needle);
+            if ($ignore_case) $needle = \mb_strtolower($needle);
 
             if ($needle !== '' && \str_contains($haystack, $needle)) {
                 return true;
@@ -170,10 +170,10 @@ class Str
      * Determine if a given string contains all array values.
      * @param  iterable<string>  $needles
      */
-    public function containsAll(string $haystack, iterable $needles, bool $ignoreCase = false): bool
+    public function containsAll(string $haystack, iterable $needles, bool $ignore_case = false): bool
     {
         foreach ($needles as $needle) {
-            if (!$this->contains($haystack, $needle, $ignoreCase)) {
+            if (!$this->contains($haystack, $needle, $ignore_case)) {
                 return false;
             }
         }
@@ -184,7 +184,7 @@ class Str
     /**
      * Convert the case of a string.
      */
-    public function convertCase(string $string, int $mode = MB_CASE_FOLD, ?string $encoding = 'UTF-8'): string
+    public function convertCase(string $string, int $mode = \MB_CASE_FOLD, ?string $encoding = 'UTF-8'): string
     {
         return \mb_convert_case($string, $mode, $encoding);
     }
@@ -288,7 +288,7 @@ class Str
     {
         if (!\is_string($value)) return false;
 
-        $protocolList = empty($protocols)
+        $protocol_list = empty($protocols)
             ? 'aaa|aaas|about|acap|acct|acd|acr|adiumxtra|adt|afp|afs|aim|amss|android|appdata|apt|ark|attachment|aw|barion|beshare|bitcoin|bitcoincash|blob|bolo|browserext|calculator|callto|cap|cast|casts|chrome|chrome-extension|cid|coap|coap\+tcp|coap\+ws|coaps|coaps\+tcp|coaps\+ws|com-eventbrite-attendee|content|conti|crid|cvs|dab|data|dav|diaspora|dict|did|dis|dlna-playcontainer|dlna-playsingle|dns|dntp|dpp|drm|drop|dtn|dvb|ed2k|elsi|example|facetime|fax|feed|feedready|file|filesystem|finger|first-run-pen-experience|fish|fm|ftp|fuchsia-pkg|geo|gg|git|gizmoproject|go|gopher|graph|gtalk|h323|ham|hcap|hcp|http|https|hxxp|hxxps|hydrazone|iax|icap|icon|im|imap|info|iotdisco|ipn|ipp|ipps|irc|irc6|ircs|iris|iris\.beep|iris\.lwz|iris\.xpc|iris\.xpcs|isostore|itms|jabber|jar|jms|keyparc|lastfm|ldap|ldaps|leaptofrogans|lorawan|lvlt|magnet|mailserver|mailto|maps|market|message|mid|mms|modem|mongodb|moz|ms-access|ms-browser-extension|ms-calculator|ms-drive-to|ms-enrollment|ms-excel|ms-eyecontrolspeech|ms-gamebarservices|ms-gamingoverlay|ms-getoffice|ms-help|ms-infopath|ms-inputapp|ms-lockscreencomponent-config|ms-media-stream-id|ms-mixedrealitycapture|ms-mobileplans|ms-officeapp|ms-people|ms-project|ms-powerpoint|ms-publisher|ms-restoretabcompanion|ms-screenclip|ms-screensketch|ms-search|ms-search-repair|ms-secondary-screen-controller|ms-secondary-screen-setup|ms-settings|ms-settings-airplanemode|ms-settings-bluetooth|ms-settings-camera|ms-settings-cellular|ms-settings-cloudstorage|ms-settings-connectabledevices|ms-settings-displays-topology|ms-settings-emailandaccounts|ms-settings-language|ms-settings-location|ms-settings-lock|ms-settings-nfctransactions|ms-settings-notifications|ms-settings-power|ms-settings-privacy|ms-settings-proximity|ms-settings-screenrotation|ms-settings-wifi|ms-settings-workplace|ms-spd|ms-sttoverlay|ms-transit-to|ms-useractivityset|ms-virtualtouchpad|ms-visio|ms-walk-to|ms-whiteboard|ms-whiteboard-cmd|ms-word|msnim|msrp|msrps|mss|mtqp|mumble|mupdate|mvn|news|nfs|ni|nih|nntp|notes|ocf|oid|onenote|onenote-cmd|opaquelocktoken|openpgp4fpr|pack|palm|paparazzi|payto|pkcs11|platform|pop|pres|prospero|proxy|pwid|psyc|pttp|qb|query|redis|rediss|reload|res|resource|rmi|rsync|rtmfp|rtmp|rtsp|rtsps|rtspu|s3|secondlife|service|session|sftp|sgn|shttp|sieve|simpleledger|sip|sips|skype|smb|sms|smtp|snews|snmp|soap\.beep|soap\.beeps|soldat|spiffe|spotify|ssh|steam|stun|stuns|submit|svn|tag|teamspeak|tel|teliaeid|telnet|tftp|tg|things|thismessage|tip|tn3270|tool|ts3server|turn|turns|tv|udp|unreal|urn|ut2004|v-event|vemmi|ventrilo|videotex|vnc|view-source|wais|webcal|wpid|ws|wss|wtai|wyciwyg|xcon|xcon-userid|xfire|xmlrpc\.beep|xmlrpc\.beeps|xmpp|xri|ymsgr|z39\.50|z39\.50r|z39\.50s'
             : \implode('|', $protocols);
 
@@ -315,7 +315,7 @@ class Str
             (?:\# (?:[\pL\pN\-._\~!$&\'()*+,;=:@/?]|%[0-9A-Fa-f]{2})* )?       # a fragment (optional)
         $~ixu';
 
-        return \preg_match(\str_replace('LARAVEL_PROTOCOLS', $protocolList, $pattern), $value) > 0;
+        return \preg_match(\str_replace('LARAVEL_PROTOCOLS', $protocol_list, $pattern), $value) > 0;
     }
 
     /**
@@ -454,7 +454,7 @@ class Str
     public function padBoth(string $value, int $length, string $pad = ' '): string
     {
         if (\function_exists('mb_str_pad')) {
-            return \mb_str_pad($value, $length, $pad, STR_PAD_BOTH);
+            return \mb_str_pad($value, $length, $pad, \STR_PAD_BOTH);
         }
 
         $short = \max(0, $length - \mb_strlen($value));
@@ -472,7 +472,7 @@ class Str
     public function padLeft(string $value, int $length, string $pad = ' '): string
     {
         if (\function_exists('mb_str_pad')) {
-            return \mb_str_pad($value, $length, $pad, STR_PAD_LEFT);
+            return \mb_str_pad($value, $length, $pad, \STR_PAD_LEFT);
         }
 
         $short = \max(0, $length - \mb_strlen($value));
@@ -486,7 +486,7 @@ class Str
     public function padRight(string $value, int $length, string $pad = ' '): string
     {
         if (\function_exists('mb_str_pad')) {
-            return \mb_str_pad($value, $length, $pad, STR_PAD_RIGHT);
+            return \mb_str_pad($value, $length, $pad, \STR_PAD_RIGHT);
         }
 
         $short = \max(0, $length - \mb_strlen($value));
@@ -527,7 +527,7 @@ class Str
      */
     public function random(int $length = 16): string
     {
-        return ($this->randomStringFactory ?? function ($length) {
+        return ($this->random_string_factory ?? function ($length) {
             $string = '';
 
             while (($len = \strlen($string)) < $length) {
@@ -549,36 +549,36 @@ class Str
      */
     public function createRandomStringsUsing(callable|null $factory = null): void
     {
-        $this->randomStringFactory = $factory;
+        $this->random_string_factory = $factory;
     }
 
     /**
      * Set the sequence that will be used to generate random strings.
      */
-    public function createRandomStringsUsingSequence(array $sequence, callable|null $whenMissing = null): void
+    public function createRandomStringsUsingSequence(array $sequence, callable|null $when_missing = null): void
     {
         $next = 0;
 
-        $whenMissing ??= function ($length) use (&$next) {
-            $factoryCache = $this->randomStringFactory;
+        $when_missing ??= function ($length) use (&$next) {
+            $factoryCache = $this->random_string_factory;
 
-            $this->randomStringFactory = null;
+            $this->random_string_factory = null;
 
             $randomString = $this->random($length);
 
-            $this->randomStringFactory = $factoryCache;
+            $this->random_string_factory = $factoryCache;
 
             $next++;
 
             return $randomString;
         };
 
-        $this->createRandomStringsUsing(function ($length) use (&$next, $sequence, $whenMissing) {
+        $this->createRandomStringsUsing(function ($length) use (&$next, $sequence, $when_missing) {
             if (\array_key_exists($next, $sequence)) {
                 return $sequence[$next++];
             }
 
-            return $whenMissing($length);
+            return $when_missing($length);
         });
     }
 
@@ -587,7 +587,7 @@ class Str
      */
     public function createRandomStringsNormally(): void
     {
-        $this->randomStringFactory = null;
+        $this->random_string_factory = null;
     }
 
     /**
@@ -712,7 +712,7 @@ class Str
     {
         $parts = \explode(' ', $value);
 
-        $parts = \count($parts) > 1
+        $parts = \sizeof($parts) > 1
             ? \array_map([$this::class, 'title'], $parts)
             : \array_map([$this::class, 'title'], $this->ucsplit(\implode('_', $parts)));
 
@@ -728,9 +728,9 @@ class Str
      * @param  string|string[]  $subject
      * @return string|string[]
      */
-    public static function replace(string|array $search, string|array $replace, string|array $subject, bool $caseSensitive = true): string|array
+    public function replace(string|array $search, string|array $replace, string|array $subject, bool $case_sensitive = true): string|array
     {
-        return $caseSensitive
+        return $case_sensitive
             ? \str_replace($search, $replace, $subject)
             : \str_ireplace($search, $replace, $subject);
     }
@@ -749,11 +749,11 @@ class Str
 
         $endPunctuation = ['.', '!', '?', ':', '—', ','];
 
-        $words = \preg_split('/\s+/', $value, -1, PREG_SPLIT_NO_EMPTY);
+        $words = \preg_split('/\s+/', $value, -1, \PREG_SPLIT_NO_EMPTY);
 
         $words[0] = \ucfirst(\mb_strtolower($words[0]));
 
-        for ($i = 0; $i < \count($words); $i++) {
+        for ($i = 0; $i < \sizeof($words); $i++) {
             $lowercaseWord = \mb_strtolower($words[$i]);
 
             if (\str_contains($lowercaseWord, '-')) {
@@ -816,8 +816,8 @@ class Str
     {
         $key = $value;
 
-        if (isset($this->snakeCache[$key][$delimiter])) {
-            return $this->snakeCache[$key][$delimiter];
+        if (isset($this->snake_cache[$key][$delimiter])) {
+            return $this->snake_cache[$key][$delimiter];
         }
 
         if (!\ctype_lower($value)) {
@@ -826,7 +826,7 @@ class Str
             $value = $this->lower(\preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
         }
 
-        return $this->snakeCache[$key][$delimiter] = $value;
+        return $this->snake_cache[$key][$delimiter] = $value;
     }
 
     /**
@@ -861,13 +861,13 @@ class Str
     {
         $key = $value;
 
-        if (isset($this->studlyCache[$key])) return $this->studlyCache[$key];
+        if (isset($this->studly_cache[$key])) return $this->studly_cache[$key];
 
         $words = \explode(' ', $this->replace(['-', '_'], ' ', $value));
 
         $studlyWords = \array_map(fn ($word) => $this->ucfirst($word), $words);
 
-        return $this->studlyCache[$key] = \implode($studlyWords);
+        return $this->studly_cache[$key] = \implode($studlyWords);
     }
 
     /**
@@ -947,7 +947,7 @@ class Str
      */
     public function ucsplit(string $string): array
     {
-        return \preg_split('/(?=\p{Lu})/u', $string, -1, PREG_SPLIT_NO_EMPTY);
+        return \preg_split('/(?=\p{Lu})/u', $string, -1, \PREG_SPLIT_NO_EMPTY);
     }
 
     /**
@@ -961,9 +961,9 @@ class Str
     /**
      * Wrap a string to a given number of characters.
      */
-    public function wordWrap(string $string, int $characters = 75, string $break = "\n", bool $cutLongWords = false): string
+    public function wordWrap(string $string, int $characters = 75, string $break = "\n", bool $cut_long_words = false): string
     {
-        return \wordwrap($string, $characters, $break, $cutLongWords);
+        return \wordwrap($string, $characters, $break, $cut_long_words);
     }
 
     /**
@@ -971,8 +971,8 @@ class Str
      */
     public function flushCache(): void
     {
-        $this->snakeCache  = [];
-        $this->camelCache  = [];
-        $this->studlyCache = [];
+        $this->snake_cache  = [];
+        $this->camel_cache  = [];
+        $this->studly_cache = [];
     }
 }
