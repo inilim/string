@@ -124,11 +124,12 @@ class Str
      */
     public function camel(string $value): string
     {
-        if (isset($this->camel_cache[$value])) {
-            return $this->camel_cache[$value];
-        }
+        // if (isset($this->camel_cache[$value])) {
+        // return $this->camel_cache[$value];
+        // }
 
-        return $this->camel_cache[$value] = \lcfirst($this->studly($value));
+        // return $this->camel_cache[$value] = \lcfirst($this->studly($value));
+        return \lcfirst($this->studly($value));
     }
 
     /**
@@ -560,17 +561,17 @@ class Str
         $next = 0;
 
         $when_missing ??= function ($length) use (&$next) {
-            $factoryCache = $this->random_string_factory;
+            $factory_cache = $this->random_string_factory;
 
             $this->random_string_factory = null;
 
-            $randomString = $this->random($length);
+            $random_string = $this->random($length);
 
-            $this->random_string_factory = $factoryCache;
+            $this->random_string_factory = $factory_cache;
 
             $next++;
 
-            return $randomString;
+            return $random_string;
         };
 
         $this->createRandomStringsUsing(function ($length) use (&$next, $sequence, $when_missing) {
@@ -702,7 +703,7 @@ class Str
      */
     public function title(string $value): string
     {
-        return \mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+        return \mb_convert_case($value, \MB_CASE_TITLE, 'UTF-8');
     }
 
     /**
@@ -814,11 +815,11 @@ class Str
      */
     public function snake(string $value, string $delimiter = '_'): string
     {
-        $key = $value;
+        // $key = $value;
 
-        if (isset($this->snake_cache[$key][$delimiter])) {
-            return $this->snake_cache[$key][$delimiter];
-        }
+        // if (isset($this->snake_cache[$key][$delimiter])) {
+        // return $this->snake_cache[$key][$delimiter];
+        // }
 
         if (!\ctype_lower($value)) {
             $value = \preg_replace('/\s+/u', '', \ucwords($value));
@@ -826,7 +827,8 @@ class Str
             $value = $this->lower(\preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
         }
 
-        return $this->snake_cache[$key][$delimiter] = $value;
+        // return $this->snake_cache[$key][$delimiter] = $value;
+        return $value;
     }
 
     /**
@@ -859,15 +861,16 @@ class Str
      */
     public function studly(string $value): string
     {
-        $key = $value;
+        // $key = $value;
 
-        if (isset($this->studly_cache[$key])) return $this->studly_cache[$key];
+        // if (isset($this->studly_cache[$key])) return $this->studly_cache[$key];
 
         $words = \explode(' ', $this->replace(['-', '_'], ' ', $value));
 
-        $studlyWords = \array_map(fn ($word) => $this->ucfirst($word), $words);
+        $studly_words = \array_map(fn ($word) => $this->ucfirst($word), $words);
 
-        return $this->studly_cache[$key] = \implode($studlyWords);
+        // return $this->studly_cache[$key] = \implode($studly_words);
+        return \implode($studly_words);
     }
 
     /**
@@ -969,10 +972,10 @@ class Str
     /**
      * Remove all strings from the casing caches.
      */
-    public function flushCache(): void
-    {
-        $this->snake_cache  = [];
-        $this->camel_cache  = [];
-        $this->studly_cache = [];
-    }
+    // public function flushCache(): void
+    // {
+    // $this->snake_cache  = [];
+    // $this->camel_cache  = [];
+    // $this->studly_cache = [];
+    // }
 }
