@@ -6,13 +6,18 @@
   "autoload": {
     "psr-4": {
       "Inilim\\String\\": "src/"
-    }
+    },
+    "files": [
+      "function.php"
+    ]
   },
   "authors": [
     {
       "name": "inilim"
     }
   ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "php": "^8.2",
     "voku/portable-ascii": "^2.0"
