@@ -20,7 +20,8 @@
   "prefer-stable": true,
   "require": {
     "php": "^8.2",
-    "voku/portable-ascii": "^2.0"
+    "voku/portable-ascii": "^2.0",
+    "inilim/lazy_method": "dev-main"
   },
   "require-dev": {
       "phpstan/phpstan": "@stable"
