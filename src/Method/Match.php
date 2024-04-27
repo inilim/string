@@ -2,7 +2,7 @@
 
 namespace Inilim\String\Method;
 
-class Match
+class Match_
 {
     public function __invoke()
     {
