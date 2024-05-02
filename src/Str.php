@@ -36,6 +36,54 @@ class Str
     protected $random_string_factory;
 
     /**
+     * Remove all whitespace from both ends of a string.
+     *
+     * @param  string  $value
+     * @param  string|null  $charlist
+     * @return string
+     */
+    public function trim($value, $charlist = null)
+    {
+        if ($charlist === null) {
+            return \preg_replace('~^[\s\x{FEFF}\x{200B}\x{200E}]+|[\s\x{FEFF}\x{200B}\x{200E}]+$~u', '', $value) ?? \trim($value);
+        }
+
+        return \trim($value, $charlist);
+    }
+
+    /**
+     * Remove all whitespace from the beginning of a string.
+     *
+     * @param  string  $value
+     * @param  string|null  $charlist
+     * @return string
+     */
+    public function ltrim($value, $charlist = null)
+    {
+        if ($charlist === null) {
+            return \preg_replace('~^[\s\x{FEFF}\x{200B}\x{200E}]+~u', '', $value) ?? \ltrim($value);
+        }
+
+        return \ltrim($value, $charlist);
+    }
+
+    /**
+     * Remove all whitespace from the end of a string.
+     *
+     * @param  string  $value
+     * @param  string|null  $charlist
+     * @return string
+     */
+    public function rtrim($value, $charlist = null)
+    {
+        if ($charlist === null) {
+            return \preg_replace('~[\s\x{FEFF}\x{200B}\x{200E}]+$~u', '', $value) ?? \rtrim($value);
+        }
+
+        return \rtrim($value, $charlist);
+    }
+
+    /**
      * Return the remainder of a string after the first occurrence of a given value.
      */
     public function after(string $subject, string $search): string
@@ -785,7 +833,7 @@ class Str
                 $hyphenatedWords = \explode('-', $lowercaseWord);
 
                 $hyphenatedWords = \array_map(function ($part) use ($minorWords) {
-                    return (\in_array($part, $minorWords) && \mb_strlen($part) <= 3) ? $part : ucfirst($part);
+                    return (\in_array($part, $minorWords) && \mb_strlen($part) <= 3) ? $part : \ucfirst($part);
                 }, $hyphenatedWords);
 
                 $words[$i] = \implode('-', $hyphenatedWords);
@@ -860,7 +908,7 @@ class Str
      */
     public function squish(string $value): string
     {
-        return \preg_replace('~(\s|\x{3164}|\x{1160})+~u', ' ', \preg_replace('~^[\s\x{FEFF}]+|[\s\x{FEFF}]+$~u', '', $value));
+        return \preg_replace('~(\s|\x{3164}|\x{1160})+~u', ' ', $this->trim($value));
     }
 
     /**
