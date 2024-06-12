@@ -12,8 +12,12 @@ class Slug
     /**
      * @param  array<string, string>  $dictionary
      */
-    public function __invoke(string $title, string $separator = '-', string|null $language = 'en', array $dictionary = ['@' => 'at']): string
-    {
+    public function __invoke(
+        string $title,
+        string $separator = '-',
+        string|null $language = 'en',
+        array $dictionary = ['@' => 'at']
+    ): string {
         $title = $language ? Str::ascii($title, $language) : $title;
 
         // Convert all dashes/underscores into separator

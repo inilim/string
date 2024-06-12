@@ -8,7 +8,7 @@ namespace Inilim\String\Method;
 class IsUrl
 {
     /**
-     * @param  mixed  $value
+     * @param mixed $value
      */
     public function __invoke($value, array $protocols = []): bool
     {

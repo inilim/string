@@ -3,15 +3,12 @@
 namespace Inilim\String\Method;
 
 /**
- * 
  */
 class IsMobile
 {
     /**
-     * @param string $useragent
-     * @return bool
      */
-    public function __invoke($useragent)
+    public function __invoke(string $useragent): bool
     {
         if (
             // add '|android|ipad|playbook|silk' to the first regular to also define tablet
