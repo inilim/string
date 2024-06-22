@@ -3,7 +3,7 @@
 namespace Inilim\String\Method;
 
 /**
- * Translate a PHP_URL_* constant to the named array keys PHP uses. | analog wp func "_wp_translate_php_url_constant_to_key"
+ * Translate a PHP_URL_# constant to the named array keys PHP uses. | analog wp func "_wp_translate_php_url_constant_to_key"
  */
 class TranslatePhpUrlConstantToKey
 {
@@ -12,10 +12,10 @@ class TranslatePhpUrlConstantToKey
 	 *
 	 * @link https://www.php.net/manual/en/url.constants.php
 	 *
-	 * @param int $constant PHP_URL_* constant.
+	 * @param int $constant PHP_URL_# constant.
 	 * @return string|false The named key or false.
 	 */
-	public function __invoke($constant)
+	public function __invoke(int $constant): string|false
 	{
 		return match ($constant) {
 			\PHP_URL_SCHEME   => 'scheme',
