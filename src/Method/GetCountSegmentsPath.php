@@ -9,8 +9,6 @@ use Inilim\String\Str;
  */
 class GetCountSegmentsPath
 {
-    /**
-     */
     public function __invoke(string $path): int
     {
         $t = \trim(Str::trim($path), '/');

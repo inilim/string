@@ -2,8 +2,6 @@
 
 namespace Inilim\String\Method;
 
-// use Inilim\String\Str;
-
 /**
  * http|https|...
  */
