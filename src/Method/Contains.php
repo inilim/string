@@ -8,7 +8,7 @@ namespace Inilim\String\Method;
 class Contains
 {
     /**
-     * @param @param  string|iterable<string>  $needles
+     * @param string|iterable<string> $needles
      */
     public function __invoke(string $haystack, string|iterable $needles, bool $ignore_case = false): bool
     {

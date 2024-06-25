@@ -32,6 +32,8 @@ $file_doc = __DIR__ . '/autodoc.txt';
 
 $ref_class = new \ReflectionClass(Str::class);
 $ALIAS = $ref_class->getConstant('ALIAS');
+$NAMESPACE = $ref_class->getConstant('NAMESPACE');
+$NAMESPACE = '\\' . \trim($NAMESPACE, '\\');
 unset($ref_class);
 $count_alias = \array_count_values($ALIAS);
 $flip_alias = \array_flip($ALIAS);
@@ -54,6 +56,28 @@ $files = \glob(__DIR__ . '\src\Method\*.php');
 
 $docs = [];
 foreach ($files as $file) {
+
+    $filename = \pathinfo($file, \PATHINFO_FILENAME);
+
+    // ------------------------------------------------------------------
+    // исключить файлы
+    // ------------------------------------------------------------------
+
+    if (\in_array($filename, ['Example', 'Property'])) {
+        continue;
+    }
+
+    // ------------------------------------------------------------------
+    // 
+    // ------------------------------------------------------------------
+
+    $param = '@param ' . $NAMESPACE . '\\' . $filename;
+
+    // ------------------------------------------------------------------
+    // 
+    // ------------------------------------------------------------------
+
+
     // d($file);
     // $file = $files[77];
     $code = \file_get_contents($file);
@@ -77,6 +101,7 @@ foreach ($files as $file) {
     if ($class === null) {
         \de([
             'класс не найден',
+            '$file' => $file,
         ]);
     }
 
@@ -89,7 +114,8 @@ foreach ($files as $file) {
     } catch (\Exception $e) {
         \de([
             'метод не найден',
-            '$e' => $e,
+            '$file' => $file,
+            '$e'    => $e,
         ]);
     }
 
@@ -99,11 +125,30 @@ foreach ($files as $file) {
 
     if (\in_array($res->method_original, $ALIAS)) {
 
-        // ------------------------------------------------------------------
-        // если один метод под несколькоми именами
-        // ------------------------------------------------------------------
         if ($count_alias[$res->method_original] > 1) {
-            // TODO еще тут осталось
+            // ------------------------------------------------------------------
+            // если один метод под несколькоми именами
+            // ------------------------------------------------------------------
+
+            $tm = \array_filter($ALIAS, fn ($m) => $m === $res->method_original);
+            $tm = \array_keys($tm);
+
+            foreach ($tm as $item) {
+                $t = new ResultParseClass(
+                    method: $item,
+                    method_original: $res->method_original,
+                    return_type: $res->return_type,
+                    args: $res->args,
+                    annotations_class: $res->annotations_class,
+                    comments_class: $res->comments_class,
+                    comments_method: $res->comments_method,
+                    annotations_method: $res->annotations_method,
+                );
+                $docs[] = $fa->__invoke($t);
+                $docs[] = $fa->__invoke($t, static: true);
+                $docs[] = $param;
+                $docs[] = '';
+            }
         } else {
 
             $t = new ResultParseClass(
@@ -118,14 +163,16 @@ foreach ($files as $file) {
             );
             $docs[] = $fa->__invoke($t);
             $docs[] = $fa->__invoke($t, static: true);
+            $docs[] = $param;
+            $docs[] = '';
         }
     }
 
     // ------------------------------------------------------------------
-    // исключить методы
+    // исключить методы (они же имена классов)
     // ------------------------------------------------------------------
 
-    if (\is_array($res->method_original, ['Match_'])) {
+    if (\in_array($res->method_original, ['Match_'])) {
         continue;
     }
 
@@ -133,12 +180,22 @@ foreach ($files as $file) {
     // 
     // ------------------------------------------------------------------
 
-    $ann_method        = $fa->__invoke($res);
-    $ann_method_static = $fa->__invoke($res, static: true);
-
-    $docs[] = $ann_method;
-    $docs[] = $ann_method_static;
+    $docs[] = $fa->__invoke($res);
+    $docs[] = $fa->__invoke($res, static: true);
+    $docs[] = $param;
+    $docs[] = '';
 }
 
+// ------------------------------------------------------------------
+// 
+// ------------------------------------------------------------------
+
+
+$docs = \array_map(function ($doc) {
+    return ' * ' . $doc;
+}, $docs);
+
+$docs = '/**' . PHP_EOL . \implode(PHP_EOL, $docs) . PHP_EOL . ' */';
+
+\file_put_contents($file_doc, $docs, \FILE_APPEND);
 de($docs);
-// \file_put_contents($file_doc, '', \FILE_APPEND);
