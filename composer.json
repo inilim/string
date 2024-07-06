@@ -21,7 +21,7 @@
   "require": {
     "php": "^8.2",
     "voku/portable-ascii": "^2.0",
-    "inilim/lazy_method": "dev-main"
+    "inilim/lazy_method": "dev-simple_function"
   },
   "require-dev": {
     "phpstan/phpstan": "@stable",

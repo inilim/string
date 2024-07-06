@@ -368,6 +368,7 @@ use Inilim\LazyMethod\LazyMethodAbstract;
  */
 class Str extends LazyMethodAbstract
 {
+    protected const PATH_TO_DIR = __DIR__ . '/Method';
     protected const NAMESPACE = 'Inilim\String\Method';
     protected const ALIAS = [
         'match'      => 'Match_',
