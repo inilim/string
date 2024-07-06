@@ -3,16 +3,16 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use Inilim\Dump\Dump;
-use Inilim\ParseLazyMethod\ParseClassAndMethod;
-use Inilim\ParseLazyMethod\ResultParseClass;
-use Inilim\ParseLazyMethod\FormationMethodAnnotation;
+use Inilim\ParseLazyMethod\ParseFunction;
+use Inilim\ParseLazyMethod\ResultParseFunction;
+use Inilim\ParseLazyMethod\FormationFunctionAnnotation;
 
 use Inilim\String\Str;
 
 // php parser
 use PhpParser\Error;
 use PhpParser\ParserFactory;
-use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\Function_;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeFinder;
@@ -42,8 +42,8 @@ $parser = (new ParserFactory())->createForHostVersion();
 $traverser = new NodeTraverser;
 $traverser->addVisitor(new NameResolver);
 $node_finder = new NodeFinder;
-$s = new ParseClassAndMethod;
-$fa = new FormationMethodAnnotation;
+$s = new ParseFunction;
+$fa = new FormationFunctionAnnotation;
 
 $files = \glob(__DIR__ . '\src\Method\*.php');
 
@@ -96,11 +96,11 @@ foreach ($files as $file) {
     // ------------------------------------------------------------------
 
     $ast   = $traverser->traverse($ast);
-    $class = $node_finder->findFirstInstanceOf($ast, Class_::class);
+    $func = $node_finder->findFirstInstanceOf($ast, Function_::class);
 
-    if ($class === null) {
+    if ($func === null) {
         \de([
-            'класс не найден',
+            'функция не найден',
             '$file' => $file,
         ]);
     }
@@ -110,10 +110,9 @@ foreach ($files as $file) {
     // ------------------------------------------------------------------
 
     try {
-        $res = $s->__invoke($class, '__invoke');
+        $res = $s->__invoke($func);
     } catch (\Exception $e) {
         \de([
-            'метод не найден',
             '$file' => $file,
             '$e'    => $e,
         ]);
@@ -123,26 +122,23 @@ foreach ($files as $file) {
     // Алиасы
     // ------------------------------------------------------------------
 
-    if (\in_array($res->method_original, $ALIAS)) {
+    if (\in_array($res->name, $ALIAS)) {
 
-        if ($count_alias[$res->method_original] > 1) {
+        if ($count_alias[$res->name] > 1) {
             // ------------------------------------------------------------------
             // если один метод под несколькоми именами
             // ------------------------------------------------------------------
 
-            $tm = \array_filter($ALIAS, fn ($m) => $m === $res->method_original);
+            $tm = \array_filter($ALIAS, fn ($m) => $m === $res->name);
             $tm = \array_keys($tm);
 
             foreach ($tm as $item) {
-                $t = new ResultParseClass(
-                    method: $item,
-                    method_original: $res->method_original,
+                $t = new ResultParseFunction(
+                    name: $res->name,
                     return_type: $res->return_type,
                     args: $res->args,
-                    annotations_class: $res->annotations_class,
-                    comments_class: $res->comments_class,
-                    comments_method: $res->comments_method,
-                    annotations_method: $res->annotations_method,
+                    comments: $res->comments,
+                    annotations: $res->annotations,
                 );
                 $docs[] = $fa->__invoke($t);
                 $docs[] = $fa->__invoke($t, static: true);
@@ -151,15 +147,12 @@ foreach ($files as $file) {
             }
         } else {
 
-            $t = new ResultParseClass(
-                method: $flip_alias[$res->method_original],
-                method_original: $res->method_original,
+            $t = new ResultParseFunction(
+                name: $flip_alias[$res->name],
                 return_type: $res->return_type,
                 args: $res->args,
-                annotations_class: $res->annotations_class,
-                comments_class: $res->comments_class,
-                comments_method: $res->comments_method,
-                annotations_method: $res->annotations_method,
+                comments: $res->comments,
+                annotations: $res->annotations,
             );
             $docs[] = $fa->__invoke($t);
             $docs[] = $fa->__invoke($t, static: true);
@@ -169,10 +162,10 @@ foreach ($files as $file) {
     }
 
     // ------------------------------------------------------------------
-    // исключить методы (они же имена классов)
+    // исключить методы
     // ------------------------------------------------------------------
 
-    if (\in_array($res->method_original, ['Match_'])) {
+    if (\in_array($res->name, ['match_'])) {
         continue;
     }
 
