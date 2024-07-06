@@ -25,6 +25,7 @@
   },
   "require-dev": {
     "phpstan/phpstan": "@stable",
-    "inilim/dump": "dev-main"
+    "inilim/dump": "dev-main",
+    "inilim/parse_lazy_method": "dev-main"
   }
 }
