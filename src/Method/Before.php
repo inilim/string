@@ -5,14 +5,11 @@ namespace Inilim\String\Method;
 /**
  * Get the portion of a string before the first occurrence of a given value.
  */
-class Before
+function before(string $subject, string $search): string
 {
-    public function __invoke(string $subject, string $search): string
-    {
-        if ($search === '') return $subject;
+    if ($search === '') return $subject;
 
-        $result = \strstr($subject, $search, true);
+    $result = \strstr($subject, $search, true);
 
-        return $result === false ? $subject : $result;
-    }
+    return $result === false ? $subject : $result;
 }

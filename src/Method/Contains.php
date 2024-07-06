@@ -4,26 +4,21 @@ namespace Inilim\String\Method;
 
 /**
  * Determine if a given string contains a given substring.
+ * @param string|iterable<string> $needles
  */
-class Contains
+function contains(string $haystack, string|iterable $needles, bool $ignore_case = false): bool
 {
-    /**
-     * @param string|iterable<string> $needles
-     */
-    public function __invoke(string $haystack, string|iterable $needles, bool $ignore_case = false): bool
-    {
-        if ($ignore_case) $haystack = \mb_strtolower($haystack);
+    if ($ignore_case) $haystack = \mb_strtolower($haystack);
 
-        if (!\is_iterable($needles)) $needles = (array) $needles;
+    if (!\is_iterable($needles)) $needles = (array) $needles;
 
-        foreach ($needles as $needle) {
-            if ($ignore_case) $needle = \mb_strtolower($needle);
+    foreach ($needles as $needle) {
+        if ($ignore_case) $needle = \mb_strtolower($needle);
 
-            if ($needle !== '' && \str_contains($haystack, $needle)) {
-                return true;
-            }
+        if ($needle !== '' && \str_contains($haystack, $needle)) {
+            return true;
         }
-
-        return false;
     }
+
+    return false;
 }

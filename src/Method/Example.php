@@ -7,9 +7,6 @@ namespace Inilim\String\Method;
 /**
  * 
  */
-class Name
+function name()
 {
-    public function __invoke()
-    {
-    }
 }

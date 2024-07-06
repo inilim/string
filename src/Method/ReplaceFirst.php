@@ -5,24 +5,22 @@ namespace Inilim\String\Method;
 /**
  * Replace the first occurrence of a given value in the string.
  */
-class ReplaceFirst
+function replaceFirst(string $search, string $replace, string $subject): string
 {
-    public function __invoke(string $search, string $replace, string $subject): string
-    {
-        if ($search === '') return $subject;
+    if ($search === '') return $subject;
 
-        $position = \strpos($subject, $search);
+    $position = \strpos($subject, $search);
 
-        if ($position !== false) {
-            return \substr_replace($subject, $replace, $position, \strlen($search));
-        }
-
-        return $subject;
+    if ($position !== false) {
+        return \substr_replace($subject, $replace, $position, \strlen($search));
     }
 
-    /**
-     * Replace the first occurrence of a given value in the string.
-     */
+    return $subject;
+}
+
+/**
+ * Replace the first occurrence of a given value in the string.
+ */
     // public function replaceFirst(string $search, string $replace, string $subject): string
     // {
     //     if ($search === '') return $subject;
@@ -35,4 +33,3 @@ class ReplaceFirst
 
     //     return $subject;
     // }
-}

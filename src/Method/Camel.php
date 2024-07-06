@@ -7,10 +7,7 @@ use Inilim\String\Str;
 /**
  * Convert a value to camel case.
  */
-class Camel
+function camel(string $value): string
 {
-    public function __invoke(string $value): string
-    {
-        return \lcfirst(Str::studly($value));
-    }
+    return \lcfirst(Str::studly($value));
 }

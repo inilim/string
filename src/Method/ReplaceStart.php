@@ -7,22 +7,20 @@ use Inilim\String\Str;
 /**
  * Replace the first occurrence of the given value if it appears at the start of the string.
  */
-class ReplaceStart
+function replaceStart(string $search, string $replace, string $subject): string
 {
-    public function __invoke(string $search, string $replace, string $subject): string
-    {
-        if ($search === '') return $subject;
+    if ($search === '') return $subject;
 
-        if (Str::startsWith($subject, $search)) {
-            return Str::replaceFirst($search, $replace, $subject);
-        }
-
-        return $subject;
+    if (Str::startsWith($subject, $search)) {
+        return Str::replaceFirst($search, $replace, $subject);
     }
 
-    /**
-     * Replace the first occurrence of the given value if it appears at the start of the string.
-     */
+    return $subject;
+}
+
+/**
+ * Replace the first occurrence of the given value if it appears at the start of the string.
+ */
     // public function replaceStart(string $search, string $replace, string $subject): string
     // {
     //     if ($search === '') return $subject;
@@ -33,4 +31,3 @@ class ReplaceStart
 
     //     return $subject;
     // }
-}

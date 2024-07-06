@@ -5,24 +5,22 @@ namespace Inilim\String\Method;
 /**
  * Remove all whitespace from both ends of a string.
  */
-class Trim
+function trim(string $value, ?string $charlist = null): string
 {
-    public function __invoke(string $value, ?string $charlist = null): string
-    {
-        if ($charlist === null) {
-            return \preg_replace('~^[\s\x{FEFF}\x{200B}\x{200E}]+|[\s\x{FEFF}\x{200B}\x{200E}]+$~u', '', $value) ?? \trim($value);
-        }
-
-        return \trim($value, $charlist);
+    if ($charlist === null) {
+        return \preg_replace('~^[\s\x{FEFF}\x{200B}\x{200E}]+|[\s\x{FEFF}\x{200B}\x{200E}]+$~u', '', $value) ?? \trim($value);
     }
 
-    /**
-     * Remove all whitespace from both ends of a string.
-     *
-     * @param  string  $value
-     * @param  string|null  $charlist
-     * @return string
-     */
+    return \trim($value, $charlist);
+}
+
+/**
+ * Remove all whitespace from both ends of a string.
+ *
+ * @param  string  $value
+ * @param  string|null  $charlist
+ * @return string
+ */
     // public static function trim($value, $charlist = null)
     // {
     //     if ($charlist === null) {
@@ -31,4 +29,3 @@ class Trim
 
     //     return trim($value, $charlist);
     // }
-}

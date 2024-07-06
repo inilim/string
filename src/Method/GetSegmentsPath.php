@@ -6,23 +6,19 @@ use Inilim\String\Str;
 
 /**
  * segments url path
+ * @return string[]|array{}
  */
-class GetSegmentsPath
+function getSegmentsPath(string $path): array
 {
-    /**
-     * @return string[]|array{}
-     */
-    public function __invoke(string $path): array
-    {
-        $t = \trim(Str::trim($path), '/');
-        if ($t === '') return [];
-        $t = \preg_replace('#\/{2,}#', '/', $t);
-        return \explode('/', $t);
-    }
+    $t = \trim(Str::trim($path), '/');
+    if ($t === '') return [];
+    $t = \preg_replace('#\/{2,}#', '/', $t);
+    return \explode('/', $t);
+}
 
-    /**
-     * @return string[]|array{}
-     */
+/**
+ * @return string[]|array{}
+ */
     // function getSegmentsPath(string $path): array
     // {
     //     $t = \trim($path, '/');
@@ -30,4 +26,3 @@ class GetSegmentsPath
     //     $t = \preg_replace('#\/{2,}#', '/', $t);
     //     return \explode('/', $t);
     // }
-}

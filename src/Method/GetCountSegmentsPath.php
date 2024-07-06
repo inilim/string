@@ -7,15 +7,13 @@ use Inilim\String\Str;
 /**
  * count segments url path
  */
-class GetCountSegmentsPath
+function getCountSegmentsPath(string $path): int
 {
-    public function __invoke(string $path): int
-    {
-        $t = \trim(Str::trim($path), '/');
-        if ($t === '') return 0;
-        $t = \preg_replace('#\/{2,}#', '/', $t);
-        return \substr_count($t, '/');
-    }
+    $t = \trim(Str::trim($path), '/');
+    if ($t === '') return 0;
+    $t = \preg_replace('#\/{2,}#', '/', $t);
+    return \substr_count($t, '/');
+}
 
     // function getCountSegmentsPath(string $path): int
     // {
@@ -24,4 +22,3 @@ class GetCountSegmentsPath
     //     $t = \preg_replace('#\/{2,}#', '/', $t);
     //     return \substr_count($t, '/');
     // }
-}

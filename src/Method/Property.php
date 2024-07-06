@@ -2,38 +2,40 @@
 
 namespace Inilim\String\Method;
 
-class Property
+/**
+ * @return array{snake_cache:array,camel_cache:array,studly_cache:array,random_string_factory:callable|null}
+ */
+function property(): \stdClass
 {
+    static $c = null;
+
+    if ($c !== null) return $c;
+
+    $c = new \stdClass;
+
     /**
      * The cache of snake-cased words.
-     *
      * @var array
      */
-    public $snake_cache = [];
+    $c->snake_cache = [];
 
     /**
      * The cache of camel-cased words.
-     *
      * @var array
      */
-    public $camel_cache = [];
+    $c->camel_cache = [];
 
     /**
      * The cache of studly-cased words.
-     *
      * @var array
      */
-    public $studly_cache = [];
+    $c->studly_cache = [];
 
     /**
      * The callback that should be used to generate random strings.
-     *
      * @var callable|null
      */
-    public $random_string_factory;
+    $c->random_string_factory = null;
 
-    public function __invoke(): self
-    {
-        return $this;
-    }
+    return $c;
 }

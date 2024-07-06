@@ -6,20 +6,15 @@ use Inilim\String\Str;
 
 /**
  * Determine if a given string contains all array values.
+ * @param  iterable<string>  $needles
  */
-class ContainsAll
+function containsAll(string $haystack, iterable $needles, bool $ignore_case = false): bool
 {
-    /**
-     * @param  iterable<string>  $needles
-     */
-    public function __invoke(string $haystack, iterable $needles, bool $ignore_case = false): bool
-    {
-        foreach ($needles as $needle) {
-            if (!Str::contains($haystack, $needle, $ignore_case)) {
-                return false;
-            }
+    foreach ($needles as $needle) {
+        if (!Str::contains($haystack, $needle, $ignore_case)) {
+            return false;
         }
-
-        return true;
     }
+
+    return true;
 }

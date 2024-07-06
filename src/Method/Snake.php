@@ -7,22 +7,20 @@ use Inilim\String\Str;
 /**
  * Convert a string to snake case.
  */
-class Snake
+function snake(string $value, string $delimiter = '_'): string
 {
-    public function __invoke(string $value, string $delimiter = '_'): string
-    {
-        if (!\ctype_lower($value)) {
-            $value = \preg_replace('/\s+/u', '', \ucwords($value));
+    if (!\ctype_lower($value)) {
+        $value = \preg_replace('/\s+/u', '', \ucwords($value));
 
-            $value = Str::lower(\preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
-        }
-
-        return $value;
+        $value = Str::lower(\preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
     }
 
-    /**
-     * Convert a string to snake case.
-     */
+    return $value;
+}
+
+/**
+ * Convert a string to snake case.
+ */
     // public function snake(string $value, string $delimiter = '_'): string
     // {
     // $key = $value;
@@ -40,4 +38,3 @@ class Snake
     //     // return $this->snake_cache[$key][$delimiter] = $value;
     //     return $value;
     // }
-}

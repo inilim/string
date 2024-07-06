@@ -4,14 +4,9 @@ namespace Inilim\String\Method;
 
 /**
  * Split a string into pieces by uppercase characters.
+ * @return string[]
  */
-class Ucsplit
+function ucsplit(string $string): array
 {
-    /**
-     * @return string[]
-     */
-    public function __invoke(string $string): array
-    {
-        return \preg_split('/(?=\p{Lu})/u', $string, -1, \PREG_SPLIT_NO_EMPTY);
-    }
+    return \preg_split('/(?=\p{Lu})/u', $string, -1, \PREG_SPLIT_NO_EMPTY);
 }

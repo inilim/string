@@ -5,10 +5,7 @@ namespace Inilim\String\Method;
 /**
  * Transliterate a UTF-8 value to ASCII.
  */
-class Ascii
+function ascii(string $value, string $language = 'en'): string
 {
-    public function __invoke(string $value, string $language = 'en'): string
-    {
-        return \voku\helper\ASCII::to_ascii($value, $language);
-    }
+    return \voku\helper\ASCII::to_ascii($value, $language);
 }

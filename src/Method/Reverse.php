@@ -5,18 +5,15 @@ namespace Inilim\String\Method;
 /**
  * Reverse the given string.
  */
-class Reverse
+function reverse(string $value): string
 {
-    public function __invoke(string $value): string
-    {
-        return \implode(\array_reverse(\mb_str_split($value)));
-    }
+    return \implode(\array_reverse(\mb_str_split($value)));
+}
 
-    /**
-     * Reverse the given string.
-     */
+/**
+ * Reverse the given string.
+ */
     // public function reverse(string $value): string
     // {
     //     return \implode(\array_reverse(\mb_str_split($value)));
     // }
-}

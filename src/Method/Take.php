@@ -7,20 +7,18 @@ use Inilim\String\Str;
 /**
  * Take the first or last {$limit} characters of a string.
  */
-class Take
+function take(string $string, int $limit): string
 {
-    public function __invoke(string $string, int $limit): string
-    {
-        if ($limit < 0) {
-            return Str::substr($string, $limit);
-        }
-
-        return Str::substr($string, 0, $limit);
+    if ($limit < 0) {
+        return Str::substr($string, $limit);
     }
 
-    /**
-     * Take the first or last {$limit} characters of a string.
-     */
+    return Str::substr($string, 0, $limit);
+}
+
+/**
+ * Take the first or last {$limit} characters of a string.
+ */
     // public function take(string $string, int $limit): string
     // {
     //     if ($limit < 0) {
@@ -29,4 +27,3 @@ class Take
 
     //     return $this->substr($string, 0, $limit);
     // }
-}

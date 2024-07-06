@@ -7,12 +7,9 @@ use Inilim\String\Str;
 /**
  * Get the portion of a string between two given values.
  */
-class Between
+function between(string $subject, string $from, string $to): string
 {
-    public function __invoke(string $subject, string $from, string $to): string
-    {
-        if ($from === '' || $to === '') return $subject;
+    if ($from === '' || $to === '') return $subject;
 
-        return Str::beforeLast(Str::after($subject, $from), $to);
-    }
+    return Str::beforeLast(Str::after($subject, $from), $to);
 }

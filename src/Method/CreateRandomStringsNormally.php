@@ -4,13 +4,10 @@ namespace Inilim\String\Method;
 
 use Inilim\String\Str;
 
-class CreateRandomStringsNormally
+/**
+ * Indicate that random strings should be created normally and not using a custom factory.
+ */
+function createRandomStringsNormally(): void
 {
-    /**
-     * Indicate that random strings should be created normally and not using a custom factory.
-     */
-    public function __invoke(): void
-    {
-        Str::property()->random_string_factory = null;
-    }
+    Str::property()->random_string_factory = null;
 }

@@ -5,18 +5,15 @@ namespace Inilim\String\Method;
 /**
  * Convert the given string to upper-case.
  */
-class Upper
+function upper(string $value): string
 {
-    public function __invoke(string $value): string
-    {
-        return \mb_strtoupper($value, 'UTF-8');
-    }
+    return \mb_strtoupper($value, 'UTF-8');
+}
 
-    /**
-     * Convert the given string to upper-case.
-     */
+/**
+ * Convert the given string to upper-case.
+ */
     // public function upper(string $value): string
     // {
     //     return \mb_strtoupper($value, 'UTF-8');
     // }
-}

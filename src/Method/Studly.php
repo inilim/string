@@ -7,21 +7,19 @@ use Inilim\String\Str;
 /**
  * Convert a value to studly caps case.
  */
-class Studly
+function studly(string $value): string
 {
-    public function __invoke(string $value): string
-    {
-        $words = \explode(' ', Str::replace(['-', '_'], ' ', $value));
+    $words = \explode(' ', Str::replace(['-', '_'], ' ', $value));
 
-        // $studly_words = \array_map(fn ($word) => Str::ucfirst($word), $words);
-        $studly_words = \array_map(Str::ucfirst(...), $words);
+    // $studly_words = \array_map(fn ($word) => Str::ucfirst($word), $words);
+    $studly_words = \array_map(Str::ucfirst(...), $words);
 
-        return \implode($studly_words);
-    }
+    return \implode($studly_words);
+}
 
-    /**
-     * Convert a value to studly caps case.
-     */
+/**
+ * Convert a value to studly caps case.
+ */
     // public function studly(string $value): string
     // {
     // $key = $value;
@@ -35,4 +33,3 @@ class Studly
     // return $this->studly_cache[$key] = \implode($studly_words);
     //     return \implode($studly_words);
     // }
-}

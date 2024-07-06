@@ -6,26 +6,22 @@ use Inilim\String\Str;
 
 /**
  * Determine if a given value is a valid URL.
+ * @param mixed $value
  */
-class IsUrl
+function isUrl($value, array $protocols = []): bool
 {
-    /**
-     * @param mixed $value
-     */
-    public function __invoke($value, array $protocols = []): bool
-    {
-        if (!\is_string($value)) return false;
+    if (!\is_string($value)) return false;
 
-        $protocol_list = empty($protocols)
-            ? Str::getURLProtocolsAsString()
-            : \implode('|', $protocols);
+    $protocol_list = empty($protocols)
+        ? Str::getURLProtocolsAsString()
+        : \implode('|', $protocols);
 
-        /*
+    /*
          * This pattern is derived from Symfony\Component\Validator\Constraints\UrlValidator (5.0.7).
          *
          * (c) Fabien Potencier <fabien@symfony.com> http://symfony.com
          */
-        $pattern = '~^
+    $pattern = '~^
             (LARAVEL_PROTOCOLS)://                                 # protocol
             (((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+:)?((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+)@)?  # basic auth
             (
@@ -43,6 +39,5 @@ class IsUrl
             (?:\# (?:[\pL\pN\-._\~!$&\'()*+,;=:@/?]|%[0-9A-Fa-f]{2})* )?       # a fragment (optional)
         $~ixu';
 
-        return \preg_match(\str_replace('LARAVEL_PROTOCOLS', $protocol_list, $pattern), $value) > 0;
-    }
+    return \preg_match(\str_replace('LARAVEL_PROTOCOLS', $protocol_list, $pattern), $value) > 0;
 }

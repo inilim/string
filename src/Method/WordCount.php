@@ -5,10 +5,7 @@ namespace Inilim\String\Method;
 /**
  * Get the number of words a string contains.
  */
-class WordCount
+function wordCount(string $string, string|null $characters = null): int
 {
-    public function __invoke(string $string, string|null $characters = null): int
-    {
-        return \str_word_count($string, 0, $characters);
-    }
+    return \str_word_count($string, 0, $characters);
 }

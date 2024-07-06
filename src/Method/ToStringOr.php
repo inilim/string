@@ -4,18 +4,13 @@ namespace Inilim\String\Method;
 
 /**
  * Convert the given value to a string or return the given fallback on failure.
+ * @param mixed $value
  */
-class ToStringOr
+function toStringOr($value, string $fallback): string
 {
-    /**
-     * @param mixed $value
-     */
-    public function __invoke($value, string $fallback): string
-    {
-        try {
-            return (string) $value;
-        } catch (\Throwable) {
-            return $fallback;
-        }
+    try {
+        return (string) $value;
+    } catch (\Throwable) {
+        return $fallback;
     }
 }

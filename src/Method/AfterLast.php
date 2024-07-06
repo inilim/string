@@ -5,16 +5,13 @@ namespace Inilim\String\Method;
 /**
  * Return the remainder of a string after the last occurrence of a given value.
  */
-class AfterLast
+function afterLast(string $subject, string $search): string
 {
-    public function __invoke(string $subject, string $search): string
-    {
-        if ($search === '') return $subject;
+    if ($search === '') return $subject;
 
-        $position = \strrpos($subject, $search);
+    $position = \strrpos($subject, $search);
 
-        if ($position === false) return $subject;
+    if ($position === false) return $subject;
 
-        return \substr($subject, $position + \strlen($search));
-    }
+    return \substr($subject, $position + \strlen($search));
 }

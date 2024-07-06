@@ -2,23 +2,20 @@
 
 namespace Inilim\String\Method;
 
-class EndsWith
+/**
+ * Determine if a given string ends with a given substring.
+ *
+ * @param  string|iterable<string>  $needles
+ */
+function endsWith(string $haystack, string|iterable $needles): bool
 {
-    /**
-     * Determine if a given string ends with a given substring.
-     *
-     * @param  string|iterable<string>  $needles
-     */
-    public function __invoke(string $haystack, string|iterable $needles): bool
-    {
-        if (!\is_iterable($needles)) $needles = (array) $needles;
+    if (!\is_iterable($needles)) $needles = (array) $needles;
 
-        foreach ($needles as $needle) {
-            if ((string) $needle !== '' && \str_ends_with($haystack, $needle)) {
-                return true;
-            }
+    foreach ($needles as $needle) {
+        if ((string) $needle !== '' && \str_ends_with($haystack, $needle)) {
+            return true;
         }
-
-        return false;
     }
+
+    return false;
 }

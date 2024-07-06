@@ -5,18 +5,15 @@ namespace Inilim\String\Method;
 /**
  * Repeat the given string.
  */
-class Repeat
+function repeat(string $string, int $times): string
 {
-    public function __invoke(string $string, int $times): string
-    {
-        return \str_repeat($string, $times);
-    }
+    return \str_repeat($string, $times);
+}
 
-    /**
-     * Repeat the given string.
-     */
+/**
+ * Repeat the given string.
+ */
     // public function repeat(string $string, int $times): string
     // {
     //     return \str_repeat($string, $times);
     // }
-}

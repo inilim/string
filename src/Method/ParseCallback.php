@@ -8,28 +8,26 @@ use Inilim\String\Str;
  * Parse a Class[@]method style callback into class and method.
  * @return array<int, string|null>
  */
-class ParseCallback
+function parseCallback(string $callback, string|null $default = null): array
 {
-    public function __invoke(string $callback, string|null $default = null): array
-    {
-        if (Str::contains($callback, "@anonymous\0")) {
-            if (Str::substrCount($callback, '@') > 1) {
-                return [
-                    Str::beforeLast($callback, '@'),
-                    Str::afterLast($callback, '@'),
-                ];
-            }
-
-            return [$callback, $default];
+    if (Str::contains($callback, "@anonymous\0")) {
+        if (Str::substrCount($callback, '@') > 1) {
+            return [
+                Str::beforeLast($callback, '@'),
+                Str::afterLast($callback, '@'),
+            ];
         }
 
-        return Str::contains($callback, '@') ? \explode('@', $callback, 2) : [$callback, $default];
+        return [$callback, $default];
     }
 
-    /**
-     * Parse a Class[@]method style callback into class and method.
-     * @return array<int, string|null>
-     */
+    return Str::contains($callback, '@') ? \explode('@', $callback, 2) : [$callback, $default];
+}
+
+/**
+ * Parse a Class[@]method style callback into class and method.
+ * @return array<int, string|null>
+ */
     // public function parseCallback(string $callback, string|null $default = null): array
     // {
     //     if ($this->contains($callback, "@anonymous\0")) {
@@ -45,4 +43,3 @@ class ParseCallback
 
     //     return $this->contains($callback, '@') ? \explode('@', $callback, 2) : [$callback, $default];
     // }
-}

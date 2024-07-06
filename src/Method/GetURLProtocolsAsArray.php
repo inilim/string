@@ -6,14 +6,9 @@ use Inilim\String\Str;
 
 /**
  * [http, https, ...]
+ * @return string[]
  */
-class GetURLProtocolsAsArray
+function getURLProtocolsAsArray(): array
 {
-    /**
-     * @return string[]
-     */
-    public function __invoke(): array
-    {
-        return \explode('|', Str::getURLProtocolsAsString());
-    }
+    return \explode('|', Str::getURLProtocolsAsString());
 }
