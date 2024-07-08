@@ -12,21 +12,21 @@ class Str
      *
      * @var array
      */
-    protected $snake_cache = [];
+    // protected $snake_cache = [];
 
     /**
      * The cache of camel-cased words.
      *
      * @var array
      */
-    protected $camel_cache = [];
+    // protected $camel_cache = [];
 
     /**
      * The cache of studly-cased words.
      *
      * @var array
      */
-    protected $studly_cache = [];
+    // protected $studly_cache = [];
 
     /**
      * The callback that should be used to generate random strings.
@@ -1042,6 +1042,48 @@ class Str
     }
 
     /**
+     * Remove all strings from the casing caches.
+     */
+    // public function flushCache(): void
+    // {
+    // $this->snake_cache  = [];
+    // $this->camel_cache  = [];
+    // $this->studly_cache = [];
+    // }
+
+    /**
+     * Remove the given string(s) if it exists at the end of the haystack.
+     *
+     * @param  string|array  $needle
+     */
+    function chopEnd(string $subject, $needle): string
+    {
+        foreach ((array) $needle as $n) {
+            if (\str_ends_with($subject, $n)) {
+                return \substr($subject, 0, -\strlen($n));
+            }
+        }
+
+        return $subject;
+    }
+
+    /**
+     * Remove the given string(s) if it exists at the start of the haystack.
+     *
+     * @param  string|array  $needle
+     */
+    function chopStart(string $subject, $needle): string
+    {
+        foreach ((array) $needle as $n) {
+            if (\str_starts_with($subject, $n)) {
+                return \substr($subject, \strlen($n));
+            }
+        }
+
+        return $subject;
+    }
+
+    /**
      * Convert the given value to a string or return the given fallback on failure.
      * @param  mixed  $value
      */
@@ -1053,14 +1095,4 @@ class Str
             return $fallback;
         }
     }
-
-    /**
-     * Remove all strings from the casing caches.
-     */
-    // public function flushCache(): void
-    // {
-    // $this->snake_cache  = [];
-    // $this->camel_cache  = [];
-    // $this->studly_cache = [];
-    // }
 }
