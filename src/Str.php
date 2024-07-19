@@ -35,6 +35,40 @@ class Str
      */
     protected $random_string_factory;
 
+    function empty(string $str): bool
+    {
+        return $str === '';
+    }
+
+    function nonEmpty(string $str): bool
+    {
+        return $str !== '';
+    }
+
+    function checkLenMax(string $str, int $max): bool
+    {
+        return $this->length($str) <= $max;
+    }
+
+    function checkLenMin(string $str, int $min): bool
+    {
+        return $this->length($str) >= $min;
+    }
+
+    function checkLenBetween(string $str, int $from_to, int $to_from): bool
+    {
+        if ($from_to > $to_from) {
+            list($to_from, $from_to) = [$from_to, $to_from];
+        }
+        $len = $this->length($str);
+        return $len >= $from_to && $len <= $to_from;
+    }
+
+    function checkLenEqual(string $str, int $equal): bool
+    {
+        return $this->length($str) === $equal;
+    }
+
     /**
      * Remove all whitespace from both ends of a string.
      *
@@ -42,7 +76,7 @@ class Str
      * @param  string|null  $charlist
      * @return string
      */
-    public function trim($value, $charlist = null)
+    function trim($value, $charlist = null)
     {
         if ($charlist === null) {
             return \preg_replace('~^[\s\x{FEFF}\x{200B}\x{200E}]+|[\s\x{FEFF}\x{200B}\x{200E}]+$~u', '', $value) ?? \trim($value);
@@ -58,7 +92,7 @@ class Str
      * @param  string|null  $charlist
      * @return string
      */
-    public function ltrim($value, $charlist = null)
+    function ltrim($value, $charlist = null)
     {
         if ($charlist === null) {
             return \preg_replace('~^[\s\x{FEFF}\x{200B}\x{200E}]+~u', '', $value) ?? \ltrim($value);
@@ -74,7 +108,7 @@ class Str
      * @param  string|null  $charlist
      * @return string
      */
-    public function rtrim($value, $charlist = null)
+    function rtrim($value, $charlist = null)
     {
         if ($charlist === null) {
             return \preg_replace('~[\s\x{FEFF}\x{200B}\x{200E}]+$~u', '', $value) ?? \rtrim($value);
@@ -86,7 +120,7 @@ class Str
     /**
      * Return the remainder of a string after the first occurrence of a given value.
      */
-    public function after(string $subject, string $search): string
+    function after(string $subject, string $search): string
     {
         return $search === '' ? $subject : \array_reverse(\explode($search, $subject, 2))[0];
     }
@@ -94,7 +128,7 @@ class Str
     /**
      * Return the remainder of a string after the last occurrence of a given value.
      */
-    public function afterLast(string $subject, string $search): string
+    function afterLast(string $subject, string $search): string
     {
         if ($search === '') return $subject;
 
@@ -108,7 +142,7 @@ class Str
     /**
      * Transliterate a UTF-8 value to ASCII.
      */
-    public function ascii(string $value, string $language = 'en'): string
+    function ascii(string $value, string $language = 'en'): string
     {
         return ASCII::to_ascii($value, $language);
     }
@@ -116,7 +150,7 @@ class Str
     /**
      * Transliterate a string to its closest ASCII representation.
      */
-    public function transliterate(string $string, string|null $unknown = '?', bool|null $strict = false): string
+    function transliterate(string $string, string|null $unknown = '?', bool|null $strict = false): string
     {
         return ASCII::to_transliterate($string, $unknown, $strict);
     }
@@ -124,7 +158,7 @@ class Str
     /**
      * Get the portion of a string before the first occurrence of a given value.
      */
-    public function before(string $subject, string $search): string
+    function before(string $subject, string $search): string
     {
         if ($search === '') return $subject;
 
@@ -136,7 +170,7 @@ class Str
     /**
      * Get the portion of a string before the last occurrence of a given value.
      */
-    public function beforeLast(string $subject, string $search): string
+    function beforeLast(string $subject, string $search): string
     {
         if ($search === '') return $subject;
         $pos = \mb_strrpos($subject, $search);
@@ -148,7 +182,7 @@ class Str
     /**
      * Get the portion of a string between two given values.
      */
-    public function between(string $subject, string $from, string $to): string
+    function between(string $subject, string $from, string $to): string
     {
         if ($from === '' || $to === '') return $subject;
 
@@ -158,7 +192,7 @@ class Str
     /**
      * Get the smallest possible portion of a string between two given values.
      */
-    public function betweenFirst(string $subject, string $from, string $to): string
+    function betweenFirst(string $subject, string $from, string $to): string
     {
         if ($from === '' || $to === '') {
             return $subject;
@@ -170,7 +204,7 @@ class Str
     /**
      * Convert a value to camel case.
      */
-    public function camel(string $value): string
+    function camel(string $value): string
     {
         // if (isset($this->camel_cache[$value])) {
         // return $this->camel_cache[$value];
@@ -183,7 +217,7 @@ class Str
     /**
      * Get the character at the specified index.
      */
-    public function charAt(string $subject, int $index): string|false
+    function charAt(string $subject, int $index): string|false
     {
         $length = \mb_strlen($subject);
 
@@ -198,7 +232,7 @@ class Str
      * Determine if a given string contains a given substring.
      * @param  string|iterable<string>  $needles
      */
-    public function contains(string $haystack, string|iterable $needles, bool $ignore_case = false): bool
+    function contains(string $haystack, string|iterable $needles, bool $ignore_case = false): bool
     {
         if ($ignore_case) $haystack = \mb_strtolower($haystack);
 
@@ -219,7 +253,7 @@ class Str
      * Determine if a given string contains all array values.
      * @param  iterable<string>  $needles
      */
-    public function containsAll(string $haystack, iterable $needles, bool $ignore_case = false): bool
+    function containsAll(string $haystack, iterable $needles, bool $ignore_case = false): bool
     {
         foreach ($needles as $needle) {
             if (!$this->contains($haystack, $needle, $ignore_case)) {
@@ -233,7 +267,7 @@ class Str
     /**
      * Convert the case of a string.
      */
-    public function convertCase(string $string, int $mode = \MB_CASE_FOLD, ?string $encoding = 'UTF-8'): string
+    function convertCase(string $string, int $mode = \MB_CASE_FOLD, ?string $encoding = 'UTF-8'): string
     {
         return \mb_convert_case($string, $mode, $encoding);
     }
@@ -243,7 +277,7 @@ class Str
      *
      * @param  string|iterable<string>  $needles
      */
-    public function endsWith(string $haystack, string|iterable $needles): bool
+    function endsWith(string $haystack, string|iterable $needles): bool
     {
         if (!\is_iterable($needles)) $needles = (array) $needles;
 
@@ -259,7 +293,7 @@ class Str
     /**
      * Cap a string with a single instance of a given value.
      */
-    public function finish(string $value, string $cap): string
+    function finish(string $value, string $cap): string
     {
         $quoted = \preg_quote($cap, '/');
 
@@ -269,7 +303,7 @@ class Str
     /**
      * Wrap the string with the given strings.
      */
-    public function wrap(string $value, string $before, string|null $after = null): string
+    function wrap(string $value, string $before, string|null $after = null): string
     {
         return $before . $value . ($after ??= $before);
     }
@@ -277,7 +311,7 @@ class Str
     /**
      * Unwrap the string with the given strings.
      */
-    public function unwrap(string $value, string $before, string|null $after = null): string
+    function unwrap(string $value, string $before, string|null $after = null): string
     {
         if ($this->startsWith($value, $before)) {
             $value = $this->substr($value, $this->length($before));
@@ -295,7 +329,7 @@ class Str
      *
      * @param  string|iterable<string>  $pattern
      */
-    public function is(string|iterable $pattern, string $value): bool
+    function is(string|iterable $pattern, string $value): bool
     {
         if (!\is_iterable($pattern)) $pattern = [$pattern];
 
@@ -323,7 +357,7 @@ class Str
     /**
      * Determine if a given string is 7 bit ASCII.
      */
-    public function isAscii(string $value): bool
+    function isAscii(string $value): bool
     {
         return ASCII::is_ascii($value);
     }
@@ -333,7 +367,7 @@ class Str
      *
      * @param  mixed  $value
      */
-    public function isUrl($value, array $protocols = []): bool
+    function isUrl($value, array $protocols = []): bool
     {
         if (!\is_string($value)) return false;
 
@@ -372,7 +406,7 @@ class Str
      *
      * @param  mixed  $value
      */
-    public function isUuid($value): bool
+    function isUuid($value): bool
     {
         if (!\is_string($value)) return false;
         return \preg_match('/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/iD', $value) > 0;
@@ -384,7 +418,7 @@ class Str
      * @param  mixed  $value
      * @return bool
      */
-    // public function isUlid($value)
+    // function isUlid($value)
     // {
     //     if (!\is_string($value)) {
     //         return false;
@@ -396,7 +430,7 @@ class Str
     /**
      * Convert a string to kebab case.
      */
-    public function kebab(string $value): string
+    function kebab(string $value): string
     {
         return $this->snake($value, '-');
     }
@@ -404,7 +438,7 @@ class Str
     /**
      * Return the length of the given string.
      */
-    public function length(string $value, string|null $encoding = 'UTF-8'): int
+    function length(string $value, string|null $encoding = 'UTF-8'): int
     {
         return \mb_strlen($value, $encoding);
     }
@@ -412,7 +446,7 @@ class Str
     /**
      * Limit the number of characters in a string.
      */
-    public function limit(string $value, int $limit = 100, string $end = '...'): string
+    function limit(string $value, int $limit = 100, string $end = '...'): string
     {
         if (\mb_strwidth($value, 'UTF-8') <= $limit) {
             return $value;
@@ -424,7 +458,7 @@ class Str
     /**
      * Convert the given string to lower-case.
      */
-    public function lower(string $value): string
+    function lower(string $value): string
     {
         return \mb_strtolower($value, 'UTF-8');
     }
@@ -432,7 +466,7 @@ class Str
     /**
      * Limit the number of words in a string.
      */
-    public function words(string $value, int $words = 100, string $end = '...'): string
+    function words(string $value, int $words = 100, string $end = '...'): string
     {
         \preg_match('/^\s*+(?:\S++\s*+){1,' . $words . '}/u', $value, $matches);
 
@@ -446,7 +480,7 @@ class Str
     /**
      * Masks a portion of a string with a repeated character.
      */
-    public function mask(string $string, string $character, int $index, int|null $length = null, string $encoding = 'UTF-8'): string
+    function mask(string $string, string $character, int $index, int|null $length = null, string $encoding = 'UTF-8'): string
     {
         if ($character === '') return $string;
 
@@ -471,7 +505,7 @@ class Str
     /**
      * Get the string matching the given pattern.
      */
-    public function match(string $pattern, string $subject): string
+    function match(string $pattern, string $subject): string
     {
         \preg_match($pattern, $subject, $matches);
 
@@ -484,7 +518,7 @@ class Str
      * Determine if a given string matches a given pattern.
      * @param  string|iterable<string>  $pattern
      */
-    public function isMatch(string|iterable $pattern, string $value): bool
+    function isMatch(string|iterable $pattern, string $value): bool
     {
         if (!\is_iterable($pattern)) $pattern = [$pattern];
 
@@ -500,7 +534,7 @@ class Str
     /**
      * Pad both sides of a string with another.
      */
-    public function padBoth(string $value, int $length, string $pad = ' '): string
+    function padBoth(string $value, int $length, string $pad = ' '): string
     {
         if (\function_exists('mb_str_pad')) {
             return \mb_str_pad($value, $length, $pad, \STR_PAD_BOTH);
@@ -518,7 +552,7 @@ class Str
     /**
      * Pad the left side of a string with another.
      */
-    public function padLeft(string $value, int $length, string $pad = ' '): string
+    function padLeft(string $value, int $length, string $pad = ' '): string
     {
         if (\function_exists('mb_str_pad')) {
             return \mb_str_pad($value, $length, $pad, \STR_PAD_LEFT);
@@ -532,7 +566,7 @@ class Str
     /**
      * Pad the right side of a string with another.
      */
-    public function padRight(string $value, int $length, string $pad = ' '): string
+    function padRight(string $value, int $length, string $pad = ' '): string
     {
         if (\function_exists('mb_str_pad')) {
             return \mb_str_pad($value, $length, $pad, \STR_PAD_RIGHT);
@@ -547,7 +581,7 @@ class Str
      * Parse a Class[@]method style callback into class and method.
      * @return array<int, string|null>
      */
-    public function parseCallback(string $callback, string|null $default = null): array
+    function parseCallback(string $callback, string|null $default = null): array
     {
         if ($this->contains($callback, "@anonymous\0")) {
             if ($this->substrCount($callback, '@') > 1) {
@@ -566,7 +600,7 @@ class Str
     /**
      * Find the multi-byte safe position of the first occurrence of a given substring in a string.
      */
-    public function position(string $haystack, string $needle, int $offset = 0, string|null $encoding = 'UTF-8'): int|false
+    function position(string $haystack, string $needle, int $offset = 0, string|null $encoding = 'UTF-8'): int|false
     {
         return \mb_strpos($haystack, $needle, $offset, $encoding);
     }
@@ -574,7 +608,7 @@ class Str
     /**
      * Generate a more truly "random" alpha-numeric string.
      */
-    public function random(int $length = 16): string
+    function random(int $length = 16): string
     {
         return ($this->random_string_factory ?? function ($length) {
             $string = '';
@@ -596,7 +630,7 @@ class Str
     /**
      * Set the callable that will be used to generate random strings.
      */
-    public function createRandomStringsUsing(callable|null $factory = null): void
+    function createRandomStringsUsing(callable|null $factory = null): void
     {
         $this->random_string_factory = $factory;
     }
@@ -604,7 +638,7 @@ class Str
     /**
      * Set the sequence that will be used to generate random strings.
      */
-    public function createRandomStringsUsingSequence(array $sequence, callable|null $when_missing = null): void
+    function createRandomStringsUsingSequence(array $sequence, callable|null $when_missing = null): void
     {
         $next = 0;
 
@@ -634,7 +668,7 @@ class Str
     /**
      * Indicate that random strings should be created normally and not using a custom factory.
      */
-    public function createRandomStringsNormally(): void
+    function createRandomStringsNormally(): void
     {
         $this->random_string_factory = null;
     }
@@ -642,7 +676,7 @@ class Str
     /**
      * Repeat the given string.
      */
-    public function repeat(string $string, int $times): string
+    function repeat(string $string, int $times): string
     {
         return \str_repeat($string, $times);
     }
@@ -650,7 +684,7 @@ class Str
     /**
      * Replace the first occurrence of a given value in the string.
      */
-    public function replaceFirst(string $search, string $replace, string $subject): string
+    function replaceFirst(string $search, string $replace, string $subject): string
     {
         if ($search === '') return $subject;
 
@@ -666,7 +700,7 @@ class Str
     /**
      * Replace the first occurrence of the given value if it appears at the start of the string.
      */
-    public function replaceStart(string $search, string $replace, string $subject): string
+    function replaceStart(string $search, string $replace, string $subject): string
     {
         if ($search === '') return $subject;
 
@@ -680,7 +714,7 @@ class Str
     /**
      * Replace the last occurrence of a given value in the string.
      */
-    public function replaceLast(string $search, string $replace, string $subject): string
+    function replaceLast(string $search, string $replace, string $subject): string
     {
         if ($search === '') return $subject;
 
@@ -696,7 +730,7 @@ class Str
     /**
      * Replace the last occurrence of a given value if it appears at the end of the string.
      */
-    public function replaceEnd(string $search, string $replace, string $subject): string
+    function replaceEnd(string $search, string $replace, string $subject): string
     {
         if ($search === '') return $subject;
 
@@ -711,7 +745,7 @@ class Str
      * Replace the patterns matching the given regular expression.
      * @return string|string[]|null
      */
-    public function replaceMatches(string $pattern, Closure|string $replace, array|string $subject, int $limit = -1): string|array|null
+    function replaceMatches(string $pattern, Closure|string $replace, array|string $subject, int $limit = -1): string|array|null
     {
         if ($replace instanceof Closure) {
             return \preg_replace_callback($pattern, $replace, $subject, $limit);
@@ -728,7 +762,7 @@ class Str
      *
      * @param  string[] $replace
      */
-    public function replaceArray(string $search, array $replace, string $subject): string
+    function replaceArray(string $search, array $replace, string $subject): string
     {
         // if ($replace instanceof \Traversable) {
         //     $replace = collect($replace)->all();
@@ -747,7 +781,7 @@ class Str
     /**
      * Reverse the given string.
      */
-    public function reverse(string $value): string
+    function reverse(string $value): string
     {
         return \implode(\array_reverse(\mb_str_split($value)));
     }
@@ -755,7 +789,7 @@ class Str
     /**
      * Begin a string with a single instance of a given value.
      */
-    public function start(string $value, string $prefix): string
+    function start(string $value, string $prefix): string
     {
         $quoted = \preg_quote($prefix, '/');
 
@@ -765,7 +799,7 @@ class Str
     /**
      * Convert the given string to upper-case.
      */
-    public function upper(string $value): string
+    function upper(string $value): string
     {
         return \mb_strtoupper($value, 'UTF-8');
     }
@@ -773,7 +807,7 @@ class Str
     /**
      * Convert the given string to proper case.
      */
-    public function title(string $value): string
+    function title(string $value): string
     {
         return \mb_convert_case($value, \MB_CASE_TITLE, 'UTF-8');
     }
@@ -781,7 +815,7 @@ class Str
     /**
      * Convert the given string to proper case for each word.
      */
-    public function headline(string $value): string
+    function headline(string $value): string
     {
         $parts = \explode(' ', $value);
 
@@ -801,7 +835,7 @@ class Str
      * @param  string|string[]  $subject
      * @return string|string[]
      */
-    public function replace(string|array $search, string|array $replace, string|array $subject, bool $case_sensitive = true): string|array
+    function replace(string|array $search, string|array $replace, string|array $subject, bool $case_sensitive = true): string|array
     {
         return $case_sensitive
             ? \str_replace($search, $replace, $subject)
@@ -813,7 +847,7 @@ class Str
      *
      * See: https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case
      */
-    public function apa(string $value): string
+    function apa(string $value): string
     {
         $minorWords = [
             'and', 'as', 'but', 'for', 'if', 'nor', 'or', 'so', 'yet', 'a', 'an',
@@ -857,7 +891,7 @@ class Str
      * Generate a URL friendly "slug" from a given string.
      * @param  array<string, string>  $dictionary
      */
-    public function slug(string $title, string $separator = '-', string|null $language = 'en', array $dictionary = ['@' => 'at']): string
+    function slug(string $title, string $separator = '-', string|null $language = 'en', array $dictionary = ['@' => 'at']): string
     {
         $title = $language ? $this->ascii($title, $language) : $title;
 
@@ -885,7 +919,7 @@ class Str
     /**
      * Convert a string to snake case.
      */
-    public function snake(string $value, string $delimiter = '_'): string
+    function snake(string $value, string $delimiter = '_'): string
     {
         // $key = $value;
 
@@ -906,7 +940,7 @@ class Str
     /**
      * Remove all "extra" blank space from the given string.
      */
-    public function squish(string $value): string
+    function squish(string $value): string
     {
         return \preg_replace('~(\s|\x{3164}|\x{1160})+~u', ' ', $this->trim($value));
     }
@@ -915,7 +949,7 @@ class Str
      * Determine if a given string starts with a given substring.
      * @param  string|iterable<string>  $needles
      */
-    public function startsWith(string $haystack, string|iterable $needles): bool
+    function startsWith(string $haystack, string|iterable $needles): bool
     {
         if (!\is_iterable($needles)) $needles = [$needles];
 
@@ -931,7 +965,7 @@ class Str
     /**
      * Convert a value to studly caps case.
      */
-    public function studly(string $value): string
+    function studly(string $value): string
     {
         // $key = $value;
 
@@ -948,7 +982,7 @@ class Str
     /**
      * Returns the portion of the string specified by the start and length parameters.
      */
-    public function substr(string $string, int $start, int|null $length = null, string $encoding = 'UTF-8'): string
+    function substr(string $string, int $start, int|null $length = null, string $encoding = 'UTF-8'): string
     {
         return \mb_substr($string, $start, $length, $encoding);
     }
@@ -956,7 +990,7 @@ class Str
     /**
      * Returns the number of substring occurrences.
      */
-    public function substrCount(string $haystack, string $needle, int $offset = 0, int|null $length = null): int
+    function substrCount(string $haystack, string $needle, int $offset = 0, int|null $length = null): int
     {
         if ($length !== null) {
             return \substr_count($haystack, $needle, $offset, $length);
@@ -973,7 +1007,7 @@ class Str
      * @param  int|int[]|null  $length
      * @return string|string[]
      */
-    public function substrReplace(string|array $string, string|array $replace, int|array $offset = 0, int|array|null $length = null): string|array
+    function substrReplace(string|array $string, string|array $replace, int|array $offset = 0, int|array|null $length = null): string|array
     {
         if ($length === null) $length = \strlen($string);
 
@@ -983,7 +1017,7 @@ class Str
     /**
      * Swap multiple keywords in a string with other keywords.
      */
-    public function swap(array $map, string $subject): string
+    function swap(array $map, string $subject): string
     {
         return \strtr($subject, $map);
     }
@@ -991,7 +1025,7 @@ class Str
     /**
      * Take the first or last {$limit} characters of a string.
      */
-    public function take(string $string, int $limit): string
+    function take(string $string, int $limit): string
     {
         if ($limit < 0) {
             return $this->substr($string, $limit);
@@ -1003,7 +1037,7 @@ class Str
     /**
      * Make a string's first character lowercase.
      */
-    public function lcfirst(string $string): string
+    function lcfirst(string $string): string
     {
         return $this->lower($this->substr($string, 0, 1)) . $this->substr($string, 1);
     }
@@ -1011,7 +1045,7 @@ class Str
     /**
      * Make a string's first character uppercase.
      */
-    public function ucfirst(string $string): string
+    function ucfirst(string $string): string
     {
         return $this->upper($this->substr($string, 0, 1)) . $this->substr($string, 1);
     }
@@ -1020,7 +1054,7 @@ class Str
      * Split a string into pieces by uppercase characters.
      * @return string[]
      */
-    public function ucsplit(string $string): array
+    function ucsplit(string $string): array
     {
         return \preg_split('/(?=\p{Lu})/u', $string, -1, \PREG_SPLIT_NO_EMPTY);
     }
@@ -1028,7 +1062,7 @@ class Str
     /**
      * Get the number of words a string contains.
      */
-    public function wordCount(string $string, string|null $characters = null): int
+    function wordCount(string $string, string|null $characters = null): int
     {
         return \str_word_count($string, 0, $characters);
     }
@@ -1036,7 +1070,7 @@ class Str
     /**
      * Wrap a string to a given number of characters.
      */
-    public function wordWrap(string $string, int $characters = 75, string $break = "\n", bool $cut_long_words = false): string
+    function wordWrap(string $string, int $characters = 75, string $break = "\n", bool $cut_long_words = false): string
     {
         return \wordwrap($string, $characters, $break, $cut_long_words);
     }
@@ -1044,7 +1078,7 @@ class Str
     /**
      * Remove all strings from the casing caches.
      */
-    // public function flushCache(): void
+    // function flushCache(): void
     // {
     // $this->snake_cache  = [];
     // $this->camel_cache  = [];
