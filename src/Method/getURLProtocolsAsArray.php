@@ -10,5 +10,5 @@ use Inilim\String\Str;
  */
 function getURLProtocolsAsArray(): array
 {
-    return \explode('|', Str::getURLProtocolsAsString());
+    return Str::getURLProtocolsAsClosure()->__invoke();
 }
