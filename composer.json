@@ -23,6 +23,7 @@
     "voku/portable-ascii": "^2.0"
   },
   "require-dev": {
-      "phpstan/phpstan": "@stable"
+      "phpstan/phpstan": "@stable",
+    "inilim/dump": "dev-main"
   }
 }
