@@ -36,6 +36,24 @@ class Str
     protected $random_string_factory;
 
     /**
+     * Converts line endings to \n used on Unix-like systems.
+     * Line endings are: \n, \r, \r\n, U+2028 line separator, U+2029 paragraph separator.
+     */
+    function unixNewLines(string $s, string $replacement = "\n"): string
+    {
+        return \preg_replace("#\r\n?|\u{2028}|\u{2029}#", $replacement, $s);
+    }
+
+    /**
+     * Converts line endings to platform-specific, i.e. \r\n on Windows and \n elsewhere.
+     * Line endings are: \n, \r, \r\n, U+2028 line separator, U+2029 paragraph separator.
+     */
+    function platformNewLines(string $s): string
+    {
+        return $this->unixNewLines($s, \PHP_EOL);
+    }
+
+    /**
      * \r\n, \n\r, \n и \r > \s
      */
     function nl2space(string $str, string $replace = ' ', bool $squish = false): string
