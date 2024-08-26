@@ -1,29 +1,30 @@
 {
-  "name": "inilim/string",
-  "description": "string",
-  "type": "library",
-  "license": "MIT",
-  "autoload": {
-    "psr-4": {
-      "Inilim\\String\\": "src/"
+    "name": "inilim/string",
+    "description": "string",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Inilim\\String\\": "src/"
+        },
+        "files": [
+            "function.php"
+        ]
     },
-    "files": [
-      "function.php"
-    ]
-  },
-  "authors": [
-    {
-      "name": "inilim"
+    "authors": [
+        {
+            "name": "inilim"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.2",
+        "voku/portable-ascii": "^2.0",
+        "inilim/func_data": "dev-main"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "@stable",
+        "inilim/dump": "dev-main"
     }
-  ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "require": {
-    "php": "^8.2",
-    "voku/portable-ascii": "^2.0"
-  },
-  "require-dev": {
-      "phpstan/phpstan": "@stable",
-    "inilim/dump": "dev-main"
-  }
 }
