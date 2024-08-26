@@ -443,7 +443,15 @@ class Str
     }
 
     /**
-     * Determine if a given value is a valid URL.
+     * with filter_var "FILTER_VALIDATE_URL"
+     */
+    function isUrl2(string $url): bool
+    {
+        return \filter_var($url, \FILTER_VALIDATE_URL) !== false;
+    }
+
+    /**
+     * Determine if a given value is a valid URL. / realization laravel/symfony
      */
     function isUrl(string $value, array $protocols = []): bool
     {
