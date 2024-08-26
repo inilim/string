@@ -401,7 +401,7 @@ class Str
     function startsWithUrlBeforePath(string $url): bool
     {
         if (!\str_contains($url, '://')) return false;
-        $t = \explode('/', $this->removeWWW($url), 4);
+        $t = \preg_split('#[\/\?]#', $this->removeWWW($url), 4);
         if (\sizeof($t) < 3) return false;
         $t = \implode('/', \array_slice($t, 0, 3));
         return $this->isUrl($t);
