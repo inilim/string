@@ -437,8 +437,6 @@ class Str
                     (?:xn--[a-z0-9-]++\.)*+xn--[a-z0-9-]++            # a domain name using punycode
                         |
                     (?:[\pL\pN\pS\pM\-\_]++\.)+[\pL\pN\pM]++          # a multi-level domain name
-                        |
-                    [a-z0-9\-\_]++                                    # a single-level domain name
                 )\.?
                     |                                                 # or
                 \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}                    # an IP address
