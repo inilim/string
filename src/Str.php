@@ -398,25 +398,16 @@ class Str
         $r = \parse_url($url);
         if (!\is_array($r)) $r = [];
 
-        $r['protocol'] = $r['scheme'] ?? null;
-        $r['domain']   = $r['host'] ?? null;
-        $r['anchor']   = $r['fragment'] ?? null;
-        $r['login']    = $r['user'] ?? null;
-        $r['password'] = $r['pass'] ?? null;
-
-        unset(
-            $r['host'],
-            $r['scheme'],
-            $r['fragment'],
-            $r['user'],
-            $r['pass']
-        );
-
-        $r['port'] ??= null;
-        $r['path'] ??= null;
-        $r['query'] ??= null;
-
-        return $r;
+        return [
+            'protocol' => $r['scheme']   ?? null,
+            'login'    => $r['user']     ?? null,
+            'password' => $r['pass']     ?? null,
+            'domain'   => $r['host']     ?? null,
+            'port'     => $r['port']     ?? null,
+            'path'     => $r['path']     ?? null,
+            'query'    => $r['query']    ?? null,
+            'anchor'   => $r['fragment'] ?? null,
+        ];
     }
 
     function removeWWW(string $url): string
