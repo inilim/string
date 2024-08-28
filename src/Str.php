@@ -1045,7 +1045,7 @@ class Str
      */
     function squish(string $value): string
     {
-        return \preg_replace('~(\s|\x{3164}|\x{1160})+~u', ' ', $this->trim($value));
+        return \preg_replace('#(\s|\x{3164}|\x{1160})+#u', ' ', $this->trim($value));
     }
 
     /**
