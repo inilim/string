@@ -5,7 +5,8 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Inilim\\String\\": "src/"
+            "Inilim\\String\\": "src/",
+            "Inilim\\Test\\": "test/"
         },
         "files": [
             "function.php"
@@ -25,6 +26,7 @@
     },
     "require-dev": {
         "phpstan/phpstan": "@stable",
-        "inilim/dump": "dev-main"
+        "inilim/dump": "dev-main",
+        "phpunit/phpunit": "^11.3"
     }
 }
