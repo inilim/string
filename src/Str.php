@@ -610,16 +610,14 @@ class Str
 
     /**
      * Determine if a given string matches a given pattern.
-     * @param  string|iterable<string>  $pattern
+     * @param  string|iterable<string>  $patterns
      */
-    function isMatch(string|iterable $pattern, string $value): bool
+    function isMatch(string|iterable $patterns, string $value): bool
     {
-        if (!\is_iterable($pattern)) $pattern = [$pattern];
+        if (!\is_iterable($patterns)) $patterns = [$patterns];
 
-        foreach ($pattern as $pattern) {
-            $pattern = (string) $pattern;
-
-            if (\preg_match($pattern, $value) === 1) return true;
+        foreach ($patterns as $pattern) {
+            if (\preg_match((string) $pattern, $value) === 1) return true;
         }
 
         return false;
