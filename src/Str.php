@@ -36,6 +36,18 @@ class Str
     protected $random_string_factory;
 
     /**
+     * Replace consecutive instances of a given character with a single character in the given string.
+     *
+     * @param  string  $string
+     * @param  string  $character
+     * @return string
+     */
+    function deduplicate(string $string, string $character = ' ')
+    {
+        return \preg_replace('/' . \preg_quote($character, '/') . '+/u', $character, $string);
+    }
+
+    /**
      * Converts line endings to \n used on Unix-like systems.
      * Line endings are: \n, \r, \r\n, U+2028 line separator, U+2029 paragraph separator.
      */
