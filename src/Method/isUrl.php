@@ -5,27 +5,31 @@ namespace Inilim\String\Method;
 use Inilim\String\Str;
 
 /**
- * Determine if a given value is a valid URL.
- * @param mixed $value
+ * Determine if a given value is a valid URL. / realization laravel/symfony
  */
-function isUrl($value, array $protocols = []): bool
+function isUrl(string $value, array $protocols = []): bool
 {
-    if (!\is_string($value)) return false;
+    if (!\str_contains($value, '://')) return false;
+
 
     $protocol_list = empty($protocols)
-        ? Str::getURLProtocolsAsString()
-        : \implode('|', $protocols);
+        ? \str_replace('__SEPARATOR__', '|', \preg_quote(\_data()->URLProtocolsAsString('__SEPARATOR__')))
+        : \implode('|', \array_map(\preg_quote(...), $protocols));
 
     /*
-         * This pattern is derived from Symfony\Component\Validator\Constraints\UrlValidator (5.0.7).
+         * This pattern is derived from Symfony\Component\Validator\Constraints\UrlValidator (7.1).
          *
          * (c) Fabien Potencier <fabien@symfony.com> http://symfony.com
          */
     $pattern = '~^
             (LARAVEL_PROTOCOLS)://                                 # protocol
-            (((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+:)?((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+)@)?  # basic auth
+            (((?:[\_\.\pL\pN-]|%%[0-9A-Fa-f]{2})+:)?((?:[\_\.\pL\pN-]|%%[0-9A-Fa-f]{2})+)@)?  # basic auth
             (
-                ([\pL\pN\pS\-\_\.])+(\.?([\pL\pN]|xn\-\-[\pL\pN-]+)+\.?) # a domain name
+                (?:
+                    (?:xn--[a-z0-9-]++\.)*+xn--[a-z0-9-]++            # a domain name using punycode
+                        |
+                    (?:[\pL\pN\pS\pM\-\_]++\.)+[\pL\pN\pM]++          # a multi-level domain name
+                )\.?
                     |                                                 # or
                 \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}                    # an IP address
                     |                                                 # or
@@ -34,10 +38,10 @@ function isUrl($value, array $protocols = []): bool
                 \]  # an IPv6 address
             )
             (:[0-9]+)?                              # a port (optional)
-            (?:/ (?:[\pL\pN\-._\~!$&\'()*+,;=:@]|%[0-9A-Fa-f]{2})* )*          # a path
-            (?:\? (?:[\pL\pN\-._\~!$&\'\[\]()*+,;=:@/?]|%[0-9A-Fa-f]{2})* )?   # a query (optional)
-            (?:\# (?:[\pL\pN\-._\~!$&\'()*+,;=:@/?]|%[0-9A-Fa-f]{2})* )?       # a fragment (optional)
-        $~ixu';
+            (?:/ (?:[\pL\pN\pS\pM\-._\~!$&\'()*+,;=:@]|%%[0-9A-Fa-f]{2})* )*    # a path
+            (?:\? (?:[\pL\pN\-._\~!$&\'\[\]()*+,;=:@/?]|%%[0-9A-Fa-f]{2})* )?   # a query (optional)
+            (?:\# (?:[\pL\pN\-._\~!$&\'()*+,;=:@/?]|%%[0-9A-Fa-f]{2})* )?       # a fragment (optional)
+        $~ixuD';
 
     return \preg_match(\str_replace('LARAVEL_PROTOCOLS', $protocol_list, $pattern), $value) > 0;
 }
