@@ -22,7 +22,6 @@
     "require": {
         "php": "^8.2",
         "voku/portable-ascii": "^2.0",
-        "inilim/func_data": "dev-main",
         "inilim/func_core": "dev-main"
     },
     "require-dev": {

@@ -2,6 +2,7 @@
 
 namespace Inilim\String;
 
+use Inilim\FuncCore\FuncCore;
 use Closure;
 use voku\helper\ASCII;
 
@@ -462,7 +463,7 @@ class Str
 
 
         $protocol_list = empty($protocols)
-            ? \str_replace('__SEPARATOR__', '|', \preg_quote(\_data()->URLProtocolsAsString('__SEPARATOR__')))
+            ? \str_replace('__SEPARATOR__', '|', \preg_quote(FuncCore::URLProtocolsAsString('__SEPARATOR__')))
             : \implode('|', \array_map(\preg_quote(...), $protocols));
 
         /*
@@ -534,7 +535,7 @@ class Str
      */
     function length(string $value, string|null $encoding = 'UTF-8'): int
     {
-        return \mb_strlen($value, $encoding);
+        return FuncCore::length($value, $encoding);
     }
 
     /**
